@@ -7,11 +7,20 @@ Input_File = ''
 # pdb.set_trace()
 try:
         with open(Input_File_Path, 'r') as Input_File:
+                 from openpyxl import load_workbook
+                 load_workbook(Input_File.name)
                  pass
 
 except IOError as Error:
         print("Error leyendo el archivo ", Input_File_Path, ": ", Error)
-        F"Abortando programa :("
+        print("Abortando programa :(")
+        quit()
+except Exception as Error:
+        print("Hubo un error con el archivo de Excel ingresasdo.")
+        print("Abortando programa :(")
         quit()
 
-print("Archivo ", Input_File.name, "abierto con exito!")
+print("Archivo ", Input_File.name, "existe y es legible!")
+
+
+
