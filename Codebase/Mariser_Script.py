@@ -34,12 +34,24 @@ def Get_Lotes_Numbers():
         Operations = []
         Lote_Numbers = []
         
-        for i, Row in enumerate(Input_Worksheet):
-                if i == 0: continue
+        for Row_Number, Row in enumerate(Input_Worksheet):
+                if Row_Number == 0: continue
+                if Row_Number == Input_Worksheet.max_row - 1: continue
                 Operations.append(Row[Operations_Column].value)
                 
         def Operation_Is_Cierre(Operation): return re.match(r"^Cierre de Lote Nro\.[0-9]+$", Operation)
         def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
         
+        for Row_Number, Operation in enumerate(Operations):
+                if Operation_Is_Cierre(Operation): Lote_Numbers.append(Operation.split('.')[1])
+                elif Operation_Is_Cobro(Operation): Lote_Numbers.append(re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1))
+                else:
+                        print("Operacion no reconocida! La tercera celda de la fila {0} no coincide con el formato de un Cierre ni de un Cobro.".format(Row_Number),
+                        "Probablemente seria una buena idea rehacer el archivo de Mayores Contables."
+                        )
+                        quit()
+                        
+        Lote_Numbers = set(Lote_Numbers)
+        return (Lote_Numbers)
 Get_Lotes_Numbers()
 
