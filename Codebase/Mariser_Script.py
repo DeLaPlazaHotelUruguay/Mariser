@@ -1,5 +1,6 @@
 import openpyxl
 import pdb
+import re
 
 # Open and read the spreadsheet file
 Input_File_Path = 'C:\\Users\\sgh4n\\OneDrive\\Escritorio\\Mariser\\Modelado\\Input\\Mayores Contables, Modelado Spreadsheet.xlsx' # For now, this will be something static, later on it will be dynamically assigned
@@ -31,11 +32,14 @@ def Get_Lotes_Numbers():
         # Extract the lote numbers from the operations column
         Operations_Column = 2
         Operations = []
+        Lote_Numbers = []
         
         for i, Row in enumerate(Input_Worksheet):
                 if i == 0: continue
                 Operations.append(Row[Operations_Column].value)
                 
-
+        def Operation_Is_Cierre(Operation): return re.match(r"^Cierre de Lote Nro\.[0-9]+$", Operation)
+        def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
+        
 Get_Lotes_Numbers()
 
