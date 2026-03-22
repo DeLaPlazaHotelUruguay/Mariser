@@ -1,14 +1,16 @@
 import openpyxl
 import pdb
 
+# Open and read the spreadsheet file
 Input_File_Path = 'C:\\Users\\sgh4n\\OneDrive\\Escritorio\\Mariser\\Modelado\\Input\\Mayores Contables, Modelado Spreadsheet.xlsx' # For now, this will be something static, later on it will be dynamically assigned
-Input_File = ''
+Input_File = None
+Input_Worksheet = None
 
 # pdb.set_trace()
 try:
         with open(Input_File_Path, 'r') as Input_File:
                  from openpyxl import load_workbook
-                 load_workbook(Input_File.name)
+                 Input_Worksheet = load_workbook(Input_File.name).active
                  pass
 
 except IOError as Error:
@@ -22,5 +24,18 @@ except Exception as Error:
 
 print("Archivo ", Input_File.name, "existe y es legible!")
 
+# Extract the lotes from the file
+Lotes = []
 
+def Get_Lotes_Numbers():
+        # Extract the lote numbers from the operations column
+        Operations_Column = 2
+        Operations = []
+        
+        for i, Row in enumerate(Input_Worksheet):
+                if i == 0: continue
+                Operations.append(Row[Operations_Column].value)
+                
+
+Get_Lotes_Numbers()
 
