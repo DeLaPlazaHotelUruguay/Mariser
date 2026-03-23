@@ -67,7 +67,16 @@ def Get_Lotes_Numbers():
         return (Lote_Numbers)
 Get_Lotes_Numbers()
 
-Get_Lotes_Dates():
-        pass
+def Get_Lotes_Dates():
+        Dates_Column = 0
+        Lote_Dates = []
+        
+        for Row_Number, Row in enumerate(Input_Worksheet):
+                if Row_Number == 0: continue
+                if Row_Number == Input_Worksheet.max_row - 1: continue
+                Lote_Dates.append(Row[Dates_Column].value)
+
+Get_Lotes_Dates()
+        
 
 
