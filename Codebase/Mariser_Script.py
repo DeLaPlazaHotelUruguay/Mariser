@@ -37,18 +37,21 @@ class Lote:
                 print("Lote Nro" + self.Number, self.Initial_Date)
                 
 class Cierre:
-        def __init__(self, Lote_Number, Date, Amount):
+        def __init__(self, Lote_Number, Date, Num_Asto, Amount):
                 self.Lote_Number = Lote_Number
                 self.Date = Date
+                self.Asto = Num_Asto
                 self.Amount = Amount
                 
         def Operation_Is_Cierre(Operation): return re.match(r"^Cierre de Lote Nro\.[0-9]+$", Operation)
+        def To_String(self): print("Cierre, Numero_Lote" + self.Lote_Number, self.Asto, self.Date, self.Amount )
 
 class Cobro:
-        def __init__(self, Lote_Number, Date, Compr, Amount):
+        def __init__(self, Lote_Number, Date, Compr, Num_Asto, Amount):
                 self.Lote_Number = Lote_Number
                 self.Date = Date
                 self.Compr = Compr
+                self.Asto = Num_Asto
                 self.Amount = Amount
                 
         def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
@@ -96,15 +99,15 @@ Get_Lotes_Dates()
 
 def Get_Lotes():
         def Lote_Exists(Number):
-                for Lote in Lotes: 
+                for Lote in Lotes.values(): 
                         if Number == Lote.Number: return True
                 return False
                 
-        def Date_Is_Earlier_Than_Lote(Lote, Operand_Date): return (Lote.Date > Operand_Date)
+        def Date_Is_Earlier_Than_Lote(Lote, Operand_Date): return (Lote.Initial_Date > Operand_Date)
         
         Operations_Column = 2
         Dates_Column = 0
-        Lotes = []
+        Lotes = {}
 
         for Row_Number, Row in enumerate(Input_Worksheet):
                 Operation = None
@@ -113,7 +116,7 @@ def Get_Lotes():
                 Operation = Row[Operations_Column].value
                 
                 Lote_Number = None
-                Lote_Initial_Date = None
+                Operation_Date = None
                 
                 if Cierre.Operation_Is_Cierre(Operation): Lote_Number = Operation.split('.')[1]
                 elif Cobro.Operation_Is_Cobro(Operation): Lote_Number = re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1)
@@ -123,11 +126,24 @@ def Get_Lotes():
                         )
                         quit()
                         
-                Lote_Initial_Date = Row[Dates_Column].value.date()
+                Operation_Date = Row[Dates_Column].value.date()
                 
-                if not Lote_Exists(Lote_Number):
-                        Lotes.append(Lote(Lote_Number, Lote_Initial_Date))
-                        continue
+                if not Lote_Exists(Lote_Number): Lotes[Lote_Number] = Lote(Lote_Number, Operation_Date)
+                elif Date_Is_Earlier_Than_Lote( Lotes[Lote_Number], Operation_Date ): Lotes[Lote_Number].Initial_Date = Operation_Date
+                
+                # Construct the operation
+                Current_Lote = Lotes[Lote_Number]
+                Asto_Column = 1
+                Value_Column = None
+                Compr_Column = 2
+                
+                if Cierre.Operation_Is_Cierre(Operation):
+                        Value_Column = 3
+                        
+                        Num_Asto = Row[Asto_Column].value
+                        Amount = Row[Value_Column].value
+                        
+                        Current_Lote.Operations.append(Cierre(Lote_Number, Operation_Date, Num_Asto, Amount))
 Get_Lotes()
 
 
