@@ -27,23 +27,32 @@ print("Archivo ", Input_File.name, "existe y es legible!")
 
 # Extract the lotes from the file
 class Lote:
-        def __init__(Number, Initial_Date, Operations = []):
+        def __init__(self, Number, Initial_Date, Operations = []):
                 self.Number = Number
                 self.Initial_Date = Initial_Date
                 self.Operations = Operations
                 self.Balance = None
                 
+        def To_String(self):
+                print("Lote Nro" + self.Number, self.Initial_Date)
+                
 class Cierre:
-        def __init__(Lote_Number, Date, Amount):
+        def __init__(self, Lote_Number, Date, Amount):
                 self.Lote_Number = Lote_Number
                 self.Date = Date
                 self.Amount = Amount
+                
+        def Operation_Is_Cierre(Operation): return re.match(r"^Cierre de Lote Nro\.[0-9]+$", Operation)
+
 class Cobro:
-        def __init__(Lote_Number, Date, Compr, Amount):
+        def __init__(self, Lote_Number, Date, Compr, Amount):
                 self.Lote_Number = Lote_Number
                 self.Date = Date
                 self.Compr = Compr
                 self.Amount = Amount
+                
+        def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
+
         
 Lotes = []
 
@@ -86,27 +95,39 @@ def Get_Lotes_Dates():
 Get_Lotes_Dates()
 
 def Get_Lotes():
+        def Lote_Exists(Number):
+                for Lote in Lotes: 
+                        if Number == Lote.Number: return True
+                return False
+                
+        def Date_Is_Earlier_Than_Lote(Lote, Operand_Date): return (Lote.Date > Operand_Date)
+        
         Operations_Column = 2
         Dates_Column = 0
         Lotes = []
 
         for Row_Number, Row in enumerate(Input_Worksheet):
+                Operation = None
                 if Row_Number == 0: continue
                 if Row_Number == Input_Worksheet.max_row - 1: continue
-        
-        for Row_Number, Operation in enumerate(Operations):
+                Operation = Row[Operations_Column].value
+                
                 Lote_Number = None
                 Lote_Initial_Date = None
                 
-                if Operation_Is_Cierre(Operation): Lote_Number = Operation.split('.')[1]
-                elif Operation_Is_Cobro(Operation): Lote_Number = re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1)
+                if Cierre.Operation_Is_Cierre(Operation): Lote_Number = Operation.split('.')[1]
+                elif Cobro.Operation_Is_Cobro(Operation): Lote_Number = re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1)
                 else:
                         print("Operacion no reconocida! La tercera celda de la fila {0} no coincide con el formato de un Cierre ni de un Cobro.".format(Row_Number),
                         "Probablemente seria una buena idea rehacer el archivo de Mayores Contables."
                         )
                         quit()
                         
-                Lote_Initial_Date = Row[Dates_Column].value
-                        
+                Lote_Initial_Date = Row[Dates_Column].value.date()
+                
+                if not Lote_Exists(Lote_Number):
+                        Lotes.append(Lote(Lote_Number, Lote_Initial_Date))
+                        continue
+Get_Lotes()
 
 
