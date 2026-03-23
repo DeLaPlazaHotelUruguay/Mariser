@@ -26,6 +26,18 @@ except Exception as Error:
 print("Archivo ", Input_File.name, "existe y es legible!")
 
 # Extract the lotes from the file
+class Cierre:
+        def __init__(Lote_Number, Date, Amount):
+                self.Lote_Number = Lote_Number
+                self.Date = Date
+                self.Amount = Amount
+class Cobro:
+        def __init__(Lote_Number, Date, Compr, Amount):
+                self.Lote_Number = Lote_Number
+                self.Date = Date
+                self.Compr = Compr
+                self.Amount = Amount
+        
 Lotes = []
 
 def Get_Lotes_Numbers():
@@ -54,4 +66,8 @@ def Get_Lotes_Numbers():
         Lote_Numbers = set(Lote_Numbers)
         return (Lote_Numbers)
 Get_Lotes_Numbers()
+
+Get_Lotes_Dates():
+        pass
+
 
