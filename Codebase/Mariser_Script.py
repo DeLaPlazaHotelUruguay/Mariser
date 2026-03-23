@@ -55,6 +55,7 @@ class Cobro:
                 self.Amount = Amount
                 
         def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
+        def To_String(self): print("Cobro, Numero_Lote" + self.Lote_Number, self.Date, self.Compr, self.Asto, self.Amount)
 
         
 Lotes = []
@@ -132,18 +133,26 @@ def Get_Lotes():
                 elif Date_Is_Earlier_Than_Lote( Lotes[Lote_Number], Operation_Date ): Lotes[Lote_Number].Initial_Date = Operation_Date
                 
                 # Construct the operation
+                def Get_Compr_Operation(Operation): return re.search(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.([0-9]+)$", Operation).group(1)
+                        
+                
                 Current_Lote = Lotes[Lote_Number]
                 Asto_Column = 1
                 Value_Column = None
-                Compr_Column = 2
-                
+                Num_Asto = Row[Asto_Column].value
+
                 if Cierre.Operation_Is_Cierre(Operation):
                         Value_Column = 3
-                        
-                        Num_Asto = Row[Asto_Column].value
+                        Compr_Column = 2
                         Amount = Row[Value_Column].value
                         
                         Current_Lote.Operations.append(Cierre(Lote_Number, Operation_Date, Num_Asto, Amount))
+                elif Cobro.Operation_Is_Cobro(Operation):
+                        Value_Column = 4
+                        Compr = Get_Compr_Operation(Operation)
+                        Amount = Row[Value_Column].value
+                        
+                        Current_Lote.Operations.append(Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount))
 Get_Lotes()
 
 
