@@ -86,7 +86,27 @@ def Get_Lotes_Dates():
 Get_Lotes_Dates()
 
 def Get_Lotes():
-        pass
+        Operations_Column = 2
+        Dates_Column = 0
+        Lotes = []
+
+        for Row_Number, Row in enumerate(Input_Worksheet):
+                if Row_Number == 0: continue
+                if Row_Number == Input_Worksheet.max_row - 1: continue
         
+        for Row_Number, Operation in enumerate(Operations):
+                Lote_Number = None
+                Lote_Initial_Date = None
+                
+                if Operation_Is_Cierre(Operation): Lote_Number = Operation.split('.')[1]
+                elif Operation_Is_Cobro(Operation): Lote_Number = re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1)
+                else:
+                        print("Operacion no reconocida! La tercera celda de la fila {0} no coincide con el formato de un Cierre ni de un Cobro.".format(Row_Number),
+                        "Probablemente seria una buena idea rehacer el archivo de Mayores Contables."
+                        )
+                        quit()
+                        
+                Lote_Initial_Date = Row[Dates_Column].value
+                        
 
 
