@@ -26,6 +26,13 @@ except Exception as Error:
 print("Archivo ", Input_File.name, "existe y es legible!")
 
 # Extract the lotes from the file
+class Lote:
+        def __init__(Number, Initial_Date, Operations = []):
+                self.Number = Number
+                self.Initial_Date = Initial_Date
+                self.Operations = Operations
+                self.Balance = None
+                
 class Cierre:
         def __init__(Lote_Number, Date, Amount):
                 self.Lote_Number = Lote_Number
@@ -77,6 +84,9 @@ def Get_Lotes_Dates():
                 Lote_Dates.append(Row[Dates_Column].value)
 
 Get_Lotes_Dates()
+
+def Get_Lotes():
+        pass
         
 
 
