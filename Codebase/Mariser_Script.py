@@ -126,7 +126,9 @@ Output_Workbook = Workbook()
 Output_Worksheet = Output_Workbook.active
 
 def Get_Output_File():
+        def Get_Lote_Rowspan(Lote): return len(Lote.Cierres) if len(Lote.Cierres) > len(Lote.Cobros) else len(Lote.Cobros)
+                
         for Lote in Lotes.values():
                 # Contruct the row used by the lote
                 pass
-        
+Get_Output_File()
