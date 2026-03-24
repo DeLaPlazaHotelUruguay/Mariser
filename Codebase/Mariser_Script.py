@@ -58,45 +58,7 @@ class Cobro:
         def To_String(self): print("Cobro, Numero_Lote" + self.Lote_Number, self.Date, self.Compr, self.Asto, self.Amount)
 
         
-Lotes = []
-
-def Get_Lotes_Numbers():
-        # Extract the lote numbers from the operations column
-        Operations_Column = 2
-        Operations = []
-        Lote_Numbers = []
-        
-        for Row_Number, Row in enumerate(Input_Worksheet):
-                if Row_Number == 0: continue
-                if Row_Number == Input_Worksheet.max_row - 1: continue
-                Operations.append(Row[Operations_Column].value)
-                
-        def Operation_Is_Cierre(Operation): return re.match(r"^Cierre de Lote Nro\.[0-9]+$", Operation)
-        def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
-        
-        for Row_Number, Operation in enumerate(Operations):
-                if Operation_Is_Cierre(Operation): Lote_Numbers.append(Operation.split('.')[1])
-                elif Operation_Is_Cobro(Operation): Lote_Numbers.append(re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1))
-                else:
-                        print("Operacion no reconocida! La tercera celda de la fila {0} no coincide con el formato de un Cierre ni de un Cobro.".format(Row_Number),
-                        "Probablemente seria una buena idea rehacer el archivo de Mayores Contables."
-                        )
-                        quit()
-                        
-        Lote_Numbers = set(Lote_Numbers)
-        return (Lote_Numbers)
-Get_Lotes_Numbers()
-
-def Get_Lotes_Dates():
-        Dates_Column = 0
-        Lote_Dates = []
-        
-        for Row_Number, Row in enumerate(Input_Worksheet):
-                if Row_Number == 0: continue
-                if Row_Number == Input_Worksheet.max_row - 1: continue
-                Lote_Dates.append(Row[Dates_Column].value)
-
-Get_Lotes_Dates()
+Lotes = {}
 
 def Get_Lotes():
         def Lote_Exists(Number):
@@ -153,6 +115,3 @@ def Get_Lotes():
                         Amount = Row[Value_Column].value
                         
                         Current_Lote.Operations.append(Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount))
-Get_Lotes()
-
-
