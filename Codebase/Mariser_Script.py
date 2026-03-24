@@ -31,6 +31,8 @@ class Lote:
                 self.Number = Number
                 self.Initial_Date = Initial_Date
                 self.Operations = Operations
+                self.Cierres = []
+                self.Cobros = []
                 self.Balance = None
                 
         def To_String(self):
@@ -105,25 +107,25 @@ def Get_Lotes():
                         Compr_Column = 2
                         Amount = Row[Value_Column].value
                         
-                        Current_Lote.Operations.append(Cierre(Lote_Number, Operation_Date, Num_Asto, Amount))
+                        Current_Lote.Cierres.append(Cierre(Lote_Number, Operation_Date, Num_Asto, Amount))
+                        Current_Lote.Operations.append(Current_Lote.Cierres[-1])
                 elif Cobro.Operation_Is_Cobro(Operation):
                         Value_Column = 4
                         Compr = Get_Compr_Operation(Operation)
                         Amount = Row[Value_Column].value
                         
-                        Current_Lote.Operations.append(Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount))
+                        Current_Lote.Cobros.append(Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount))
+                        Current_Lote.Operations.append(Current_Lote.Cobros[-1])
         return Lotes
                         
 Lotes = Get_Lotes()
 
 # Build the output file
+from openpyxl import Workbook
 Output_Workbook = Workbook()
 Output_Worksheet = Output_Workbook.active
 
-Get_Output_File()
-        pass
-        
-Get_Output_File()
+def Get_Output_File():
         for Lote in Lotes.values():
                 # Contruct the row used by the lote
                 pass
