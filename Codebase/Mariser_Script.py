@@ -56,10 +56,7 @@ class Cobro:
                 
         def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
         def To_String(self): print("Cobro, Numero_Lote" + self.Lote_Number, self.Date, self.Compr, self.Asto, self.Amount)
-
         
-Lotes = {}
-
 def Get_Lotes():
         def Lote_Exists(Number):
                 for Lote in Lotes.values(): 
@@ -115,3 +112,16 @@ def Get_Lotes():
                         Amount = Row[Value_Column].value
                         
                         Current_Lote.Operations.append(Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount))
+        return Lotes
+                        
+Lotes = Get_Lotes()
+
+# Build the output file
+Output_Workbook = Workbook()
+Output_Worksheet = Output_Workbook.active
+
+Get_Output_File()
+        pass
+        
+Get_Output_File()
+        
