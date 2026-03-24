@@ -30,11 +30,18 @@ class Lote:
         def __init__(self, Number, Initial_Date, Operations = []):
                 self.Number = Number
                 self.Initial_Date = Initial_Date
-                self.Operations = Operations
+                self.Operations = Operations # Currently doesn't work; it stores Operations from all the Lotes. I won't bother with this rn
                 self.Cierres = []
                 self.Cobros = []
-                self.Balance = None
                 
+        def Get_Balance(self):
+                Balance = 0
+                
+                for Operation in (self.Cierres + self.Cobros):
+                        if type(Operation) is Cierre: Balance -= Operation.Amount
+                        elif type(Operation) is Cobro: Balance += Operation.Amount
+                return Balance
+        
         def To_String(self):
                 print("Lote Nro" + self.Number, self.Initial_Date)
                 
@@ -95,7 +102,6 @@ def Get_Lotes():
                 
                 # Construct the operation
                 def Get_Compr_Operation(Operation): return re.search(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.([0-9]+)$", Operation).group(1)
-                        
                 
                 Current_Lote = Lotes[Lote_Number]
                 Asto_Column = 1
@@ -107,15 +113,17 @@ def Get_Lotes():
                         Compr_Column = 2
                         Amount = Row[Value_Column].value
                         
-                        Current_Lote.Cierres.append(Cierre(Lote_Number, Operation_Date, Num_Asto, Amount))
-                        Current_Lote.Operations.append(Current_Lote.Cierres[-1])
+                        Operation_Object = Cierre(Lote_Number, Operation_Date, Num_Asto, Amount)
+                        Current_Lote.Cierres.append(Operation_Object)
+                        Current_Lote.Operations.append(Operation_Object)
                 elif Cobro.Operation_Is_Cobro(Operation):
                         Value_Column = 4
                         Compr = Get_Compr_Operation(Operation)
                         Amount = Row[Value_Column].value
                         
-                        Current_Lote.Cobros.append(Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount))
-                        Current_Lote.Operations.append(Current_Lote.Cobros[-1])
+                        Operation_Object = Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount)
+                        Current_Lote.Cobros.append(Operation_Object)
+                        Current_Lote.Operations.append(Operation_Object)
         return Lotes
                         
 Lotes = Get_Lotes()
@@ -152,5 +160,4 @@ def Get_Output_File():
                         else: Row_Cells += [None, None, None]
                         
                         Lote_Rows.append(Row_Cells)
-
 Get_Output_File()
