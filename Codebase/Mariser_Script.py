@@ -140,6 +140,10 @@ def Get_Output_File():
         for Lote in Lotes.values():
                 def Cierre_Num_Exists(Number, Lote): return Number < len(Lote.Cierres)
                 def Cobro_Num_Exists(Number, Lote): return Number < len(Lote.Cobros)
+                def Get_State_Character_Lote(Balance):
+                        if Balance == 0: return '🗸'
+                        elif Balance < 0: return '🗴'
+                        elif Balance > 0: return '⚠'
                 
                 # Contruct the rows used by the lote
                 Lote_Rowspan = Get_Lote_Rowspan(Lote)
@@ -157,7 +161,13 @@ def Get_Output_File():
                         else: Row_Cells += [None, None, None]
                         
                         if Current_Cobro is not None: Row_Cells += [Current_Cobro.Asto, Current_Cobro.Date, Current_Cobro.Compr, Current_Cobro.Amount]
-                        else: Row_Cells += [None, None, None]
+                        else: Row_Cells += [None, None, None, None]
                         
+                        if Row_Number == 0: Row_Cells += [Get_State_Character_Lote(Lote.Get_Balance()), Lote.Get_Balance()]
+                            
                         Lote_Rows.append(Row_Cells)
+        # wb = Workbook()
+        # ws = wb.active
+        # for Row in Lote_Rows: ws.append(Row)
+        # wb.save("Test.xlsx")
 Get_Output_File()
