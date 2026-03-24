@@ -124,4 +124,7 @@ Get_Output_File()
         pass
         
 Get_Output_File()
+        for Lote in Lotes.values():
+                # Contruct the row used by the lote
+                pass
         
