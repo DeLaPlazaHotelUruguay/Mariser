@@ -128,7 +128,29 @@ Output_Worksheet = Output_Workbook.active
 def Get_Output_File():
         def Get_Lote_Rowspan(Lote): return len(Lote.Cierres) if len(Lote.Cierres) > len(Lote.Cobros) else len(Lote.Cobros)
                 
+        Lote_Rows = []
         for Lote in Lotes.values():
-                # Contruct the row used by the lote
-                pass
+                def Cierre_Num_Exists(Number, Lote): return Number < len(Lote.Cierres)
+                def Cobro_Num_Exists(Number, Lote): return Number < len(Lote.Cobros)
+                
+                # Contruct the rows used by the lote
+                Lote_Rowspan = Get_Lote_Rowspan(Lote)
+                
+                for Row_Number in range(Lote_Rowspan):
+                        Row_Cells = [None]
+                        if Row_Number == 0: Row_Cells[0] = Lote.Number
+                        
+                        Current_Cierre = None
+                        Current_Cobro = None
+                        if Cierre_Num_Exists(Row_Number, Lote): Current_Cierre = Lote.Cierres[Row_Number]
+                        if Cobro_Num_Exists(Row_Number, Lote): Current_Cobro = Lote.Cobros[Row_Number]
+                        
+                        if Current_Cierre is not None: Row_Cells += [Current_Cierre.Asto, Current_Cierre.Date, Current_Cierre.Amount]
+                        else: Row_Cells += [None, None, None]
+                        
+                        if Current_Cobro is not None: Row_Cells += [Current_Cobro.Asto, Current_Cobro.Date, Current_Cobro.Compr, Current_Cobro.Amount]
+                        else: Row_Cells += [None, None, None]
+                        
+                        Lote_Rows.append(Row_Cells)
+
 Get_Output_File()
