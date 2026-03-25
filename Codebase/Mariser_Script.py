@@ -135,7 +135,9 @@ Output_Worksheet = Output_Workbook.active
 
 def Get_Output_File():
         def Get_Lote_Rowspan(Lote): return len(Lote.Cierres) if len(Lote.Cierres) > len(Lote.Cobros) else len(Lote.Cobros)
-                
+        Sheet_Rows = []
+        
+        # Construct the Lote rows
         Lote_Rows = []
         for Lote in Lotes.values():
                 def Cierre_Num_Exists(Number, Lote): return Number < len(Lote.Cierres)
@@ -166,8 +168,21 @@ def Get_Output_File():
                         if Row_Number == 0: Row_Cells += [Get_State_Character_Lote(Lote.Get_Balance()), Lote.Get_Balance()]
                             
                         Lote_Rows.append(Row_Cells)
+        
+        # Construct the header rows
+        Header_Rows = []
+        Upper_Header_Row = ["Lote", "Cierres", None, None, "Cobros", None, None, "Estado", "Balance"]
+        Lower_Header_Row = [None, "Nro. Asto", "Fecha", "Valor", "Nro. Asto", "Fecha", "Compr.", "Valor", None, None]
+        
+        Header_Rows.append(Upper_Header_Row)
+        Header_Rows.append(Lower_Header_Row)
+        
+        # Load the rows to the sheet
+        Sheet_Rows += Header_Rows
+        Sheet_Rows += Lote_Rows
+        
         # wb = Workbook()
         # ws = wb.active
-        # for Row in Lote_Rows: ws.append(Row)
+        # for Row in Sheet_Rows: ws.append(Row)
         # wb.save("Test.xlsx")
 Get_Output_File()
