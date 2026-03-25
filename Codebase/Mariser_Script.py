@@ -210,7 +210,7 @@ def Get_Output_File():
         
         # Construct the header rows
         Header_Rows = []
-        Upper_Header_Row = ["Lote", "Cierres", None, None, "Cobros", None, None, "Estado", "Balance"]
+        Upper_Header_Row = ["Lote", "Cierres", None, None, "Cobros", None, None, None, "Estado", "Balance"]
         Lower_Header_Row = [None, "Nro. Asto", "Fecha", "Valor", "Nro. Asto", "Fecha", "Compr.", "Valor", None, None]
         
         Header_Rows.append(Upper_Header_Row)
