@@ -43,7 +43,7 @@ class Lote:
                 return Balance
         
         def To_String(self):
-                print("Lote Nro" + self.Number, self.Initial_Date)
+                print("Lote Nro" + self.Number, self.Initial_Date.date())
                 
 class Cierre:
         def __init__(self, Lote_Number, Date, Num_Asto, Amount):
@@ -95,7 +95,7 @@ def Get_Lotes():
                         )
                         quit()
                         
-                Operation_Date = Row[Dates_Column].value.date()
+                Operation_Date = Row[Dates_Column].value
                 
                 if not Lote_Exists(Lote_Number): Lotes[Lote_Number] = Lote(Lote_Number, Operation_Date)
                 elif Date_Is_Earlier_Than_Lote( Lotes[Lote_Number], Operation_Date ): Lotes[Lote_Number].Initial_Date = Operation_Date
