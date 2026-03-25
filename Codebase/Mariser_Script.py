@@ -135,10 +135,25 @@ Output_Worksheet = Output_Workbook.active
 
 def Get_Output_File():
         def Get_Lote_Rowspan(Lote): return len(Lote.Cierres) if len(Lote.Cierres) > len(Lote.Cobros) else len(Lote.Cobros)
+        def Order_Lotes_Inplace():
+                Ordered_Lotes = {}
+                
+                # Get the Initial Dates of each Lote, from oldest to newest
+                Lotes_Tuples = []
+                for Lote_Tuple in Lotes.items(): Lotes_Tuples.append( (Lote_Tuple[1].Initial_Date, Lote_Tuple[0]) )
+                Lotes_Tuples.sort()
+                                
+                # Assign the Lotes by their initial date (oldest first)
+                for Lote_Tuple in Lotes_Tuples:
+                        Lote_Number = Lote_Tuple[1]
+                        Ordered_Lotes[str(Lote_Number)] = Lotes[Lote_Number]
+        
         Sheet_Rows = []
         
         # Construct the Lote rows
         Lote_Rows = []
+        
+        Order_Lotes_Inplace()
         for Lote in Lotes.values():
                 def Cierre_Num_Exists(Number, Lote): return Number < len(Lote.Cierres)
                 def Cobro_Num_Exists(Number, Lote): return Number < len(Lote.Cobros)
