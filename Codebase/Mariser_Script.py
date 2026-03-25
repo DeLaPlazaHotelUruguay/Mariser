@@ -153,8 +153,30 @@ def Get_Output_File():
         # Construct the Lote rows
         Lote_Rows = []
         
+        ## Group lotes by their balance
+        def Get_Grouped_Lotes():
+                Grouped_Lotes = []
+                Lotes_Zero = []
+                Lotes_Negative = []
+                Lotes_Positive = []
+                
+                for Lote in Lotes.values():
+                        Lote_Balance = Lote.Get_Balance()
+                        if  Lote_Balance == 0: Lotes_Zero.append(Lote)
+                        elif Lote_Balance < 0: Lotes_Negative.append(Lote)
+                        elif Lote_Balance > 0: Lotes_Positive.append(Lote)
+                
+                if Lotes_Negative and Lotes_Positive: Lotes_Positive.append(None)
+                elif Lotes_Negative and not Lotes_Positive: Lotes_Negative.append(None)
+                elif not Lotes_Negative and Lotes_Positive: Lotes_Positive.append()
+                elif not Lotes_Negative and not Lotes_Positive: pass
+                Grouped_Lotes += Lotes_Negative + Lotes_Positive + Lotes_Zero
+                
+                return Grouped_Lotes
+        
         Order_Lotes_Inplace()
-        for Lote in Lotes.values():
+        
+        for Lote in Get_Grouped_Lotes():
                 def Cierre_Num_Exists(Number, Lote): return Number < len(Lote.Cierres)
                 def Cobro_Num_Exists(Number, Lote): return Number < len(Lote.Cobros)
                 def Get_State_Character_Lote(Balance):
@@ -162,12 +184,14 @@ def Get_Output_File():
                         elif Balance < 0: return '🗴'
                         elif Balance > 0: return '⚠'
                 
+                if Lote is None: Lote_Rows.append([]); continue
+                
                 # Contruct the rows used by the lote
                 Lote_Rowspan = Get_Lote_Rowspan(Lote)
                 
                 for Row_Number in range(Lote_Rowspan):
                         Row_Cells = [None]
-                        if Row_Number == 0: Row_Cells[0] = Lote.Number
+                        if Row_Number == 0 : Row_Cells[0] = Lote.Number
                         
                         Current_Cierre = None
                         Current_Cobro = None
