@@ -220,8 +220,14 @@ def Get_Output_File():
         Sheet_Rows += Header_Rows
         Sheet_Rows += Lote_Rows
         
-        # wb = Workbook()
-        # ws = wb.active
-        # for Row in Sheet_Rows: ws.append(Row)
-        # wb.save("Test.xlsx")
+        # Format the worksheet
+        ## Load the cells into the workshit first
+        for Row in Sheet_Rows: Output_Worksheet.append(Row) # Necessary.
+        ##Format the dates
+        for Date_Cell in (Output_Worksheet['C'] + Output_Worksheet['F']): Date_Cell.number_format = 'dd/mm/yyyy'
+        Output_Worksheet.column_dimensions['C'].width = 12
+        Output_Worksheet.column_dimensions['F'].width = 12
+        
+        # Save the file
+        # Output_Workbook.save("Test.xlsx")
 Get_Output_File()
