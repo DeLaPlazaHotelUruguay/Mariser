@@ -239,7 +239,12 @@ def Get_Output_File():
                 Header_Cell.font = Font(bold=True)
                 Header_Cell.alignment = Alignment(horizontal='center', vertical='top')
 
+        ## Format the amounts
+        for Amount_Cell in (Output_Worksheet['D'] + Output_Worksheet['H']): Amount_Cell.number_format = r'#,##0.00'
+        Output_Worksheet.column_dimensions['D'].width = 11
+        Output_Worksheet.column_dimensions['H'].width = 11
         
         # Save the file
-        #Output_Worksheet.title = 'Mayores contables'
+        Output_Worksheet.title = 'Mayores contables'
+        Output_Workbook.save("Test.xlsx")
 Get_Output_File()
