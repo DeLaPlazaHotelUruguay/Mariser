@@ -248,6 +248,22 @@ def Get_Output_File():
         for Balance_Cell in Output_Worksheet['J']: Balance_Cell.number_format = r'\+#,##0.00;\-#,##0.00;#0'
         Output_Worksheet.column_dimensions['J'].width = 11
         
+        ## Merge Lote Nro, State and Balance cells
+        for Current_Row in Output_Worksheet.iter_rows(min_row=3, max_row=Output_Worksheet.max_row):
+                Current_Lote_Number = Current_Row[0].value
+                Current_Row_Number = Current_Row[0].row
+                if Current_Lote_Number is None: continue
+                
+                Current_Lote_Rowspan = Get_Lote_Rowspan(Lotes[Current_Lote_Number])
+                if Current_Lote_Rowspan == 1: continue
+                
+                Additional_Lote_Rows = Current_Lote_Rowspan - 1
+                End_Current_Lote_Rowspan = Current_Row_Number + Additional_Lote_Rows
+                Output_Worksheet.merge_cells('A{0}:A{1}'.format(Current_Row_Number, End_Current_Lote_Rowspan))
+                Output_Worksheet.merge_cells('I{0}:I{1}'.format(Current_Row_Number, End_Current_Lote_Rowspan))
+                Output_Worksheet.merge_cells('J{0}:J{1}'.format(Current_Row_Number, End_Current_Lote_Rowspan))
+
+        
         # Save the file
         Output_Worksheet.title = 'Mayores contables'
         Output_Workbook.save("Test.xlsx")
