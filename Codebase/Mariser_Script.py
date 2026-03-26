@@ -222,7 +222,7 @@ def Get_Output_File():
         
         # Format the worksheet
         from openpyxl.styles import Alignment, Font
-        ## Load the cells into the workshit first
+        ## Load the cells into the workshit first # I realized it says "shit", I find it funnilly fitting out of all the struggle I have had with all of this formatting thing hahahah
         for Row in Sheet_Rows: Output_Worksheet.append(Row) # Necessary.
         ##Format the dates
         for Date_Cell in (Output_Worksheet['C'] + Output_Worksheet['F']): Date_Cell.number_format = 'dd/mm/yyyy'
@@ -263,7 +263,15 @@ def Get_Output_File():
                 Output_Worksheet.merge_cells('I{0}:I{1}'.format(Current_Row_Number, End_Current_Lote_Rowspan))
                 Output_Worksheet.merge_cells('J{0}:J{1}'.format(Current_Row_Number, End_Current_Lote_Rowspan))
 
-        
+        ## Format Lote Number cells and Balance cells
+        Top_Right_Alignment = Alignment(horizontal='right', vertical='top')
+        for Lote_Num_Cell in Output_Worksheet['A']:
+                if not Lote_Num_Cell.row > 2: continue
+                Lote_Num_Cell.alignment = Top_Right_Alignment
+        for Balance_Cell in Output_Worksheet['J']:
+                if not Balance_Cell.row > 2: continue
+                Balance_Cell.alignment = Top_Right_Alignment
+                
         # Save the file
         Output_Worksheet.title = 'Mayores contables'
         Output_Workbook.save("Test.xlsx")
