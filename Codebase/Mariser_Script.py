@@ -221,6 +221,7 @@ def Get_Output_File():
         Sheet_Rows += Lote_Rows
         
         # Format the worksheet
+        from openpyxl.styles import Alignment, Font
         ## Load the cells into the workshit first
         for Row in Sheet_Rows: Output_Worksheet.append(Row) # Necessary.
         ##Format the dates
@@ -228,6 +229,17 @@ def Get_Output_File():
         Output_Worksheet.column_dimensions['C'].width = 12
         Output_Worksheet.column_dimensions['F'].width = 12
         
+        ## Format the header rows
+        Output_Worksheet.merge_cells('A1:A2')
+        Output_Worksheet.merge_cells('I1:I2')
+        Output_Worksheet.merge_cells('J1:J2')
+        Output_Worksheet.merge_cells('B1:D1')
+        Output_Worksheet.merge_cells('E1:H1')
+        for Header_Cell in (Output_Worksheet[1] + Output_Worksheet[2]):
+                Header_Cell.font = Font(bold=True)
+                Header_Cell.alignment = Alignment(horizontal='center', vertical='top')
+
+        
         # Save the file
-        # Output_Workbook.save("Test.xlsx")
+        #Output_Worksheet.title = 'Mayores contables'
 Get_Output_File()
