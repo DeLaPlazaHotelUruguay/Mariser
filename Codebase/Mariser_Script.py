@@ -244,6 +244,10 @@ def Get_Output_File():
         Output_Worksheet.column_dimensions['D'].width = 11
         Output_Worksheet.column_dimensions['H'].width = 11
         
+        ## Format the balances
+        for Balance_Cell in Output_Worksheet['J']: Balance_Cell.number_format = r'\+#,##0.00;\-#,##0.00;#0'
+        Output_Worksheet.column_dimensions['J'].width = 11
+        
         # Save the file
         Output_Worksheet.title = 'Mayores contables'
         Output_Workbook.save("Test.xlsx")
