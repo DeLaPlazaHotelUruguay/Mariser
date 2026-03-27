@@ -180,8 +180,8 @@ def Get_Output_File():
                 def Cierre_Num_Exists(Number, Lote): return Number < len(Lote.Cierres)
                 def Cobro_Num_Exists(Number, Lote): return Number < len(Lote.Cobros)
                 def Get_State_Character_Lote(Balance):
-                        if Balance == 0: return '🗸'
-                        elif Balance < 0: return '🗴'
+                        if Balance == 0: return 'P' # '🗸'
+                        elif Balance < 0: return 'O' # '🗴'
                         elif Balance > 0: return '⚠'
                 
                 if Lote is None: Lote_Rows.append([]); continue
@@ -221,7 +221,7 @@ def Get_Output_File():
         Sheet_Rows += Lote_Rows
         
         # Format the worksheet
-        from openpyxl.styles import Alignment, Font
+        from openpyxl.styles import Alignment, Font, NamedStyle
         ## Load the cells into the workshit first # I realized it says "shit", I find it funnilly fitting out of all the struggle I have had with all of this formatting thing hahahah
         for Row in Sheet_Rows: Output_Worksheet.append(Row) # Necessary.
         ##Format the dates
@@ -272,7 +272,16 @@ def Get_Output_File():
                 if not Balance_Cell.row > 2: continue
                 Balance_Cell.alignment = Top_Right_Alignment
                 
+        ## Format State cells
+        for State_Cell in Output_Worksheet['I']:
+                if not State_Cell.row > 2: continue
+                State_Cell.alignment = Alignment(horizontal='center', vertical='center')
+                match State_Cell.value:
+                        case 'P': State_Cell.font = Font(name='Wingdings 2', size='12', color='00008000', bold=True) # '🗸'
+                        case 'O': State_Cell.font = Font(name='Wingdings 2', size='12', color='00FF0000', bold=True) # '🗴'
+                        case '⚠': State_Cell.font = Font(name='Calibri', size='12', color='00FF9900', bold=True)
+        
         # Save the file
         Output_Worksheet.title = 'Mayores contables'
-        Output_Workbook.save("Test.xlsx")
+        # Output_Workbook.save("Test.xlsx")
 Get_Output_File()
