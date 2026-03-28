@@ -1,4 +1,6 @@
 import openpyxl
+from tkinter import *
+from tkinter import ttk
 import pdb
 import re
 
@@ -284,4 +286,15 @@ def Get_Output_File():
         # Save the file
         Output_Worksheet.title = 'Mayores contables'
         # Output_Workbook.save("Test.xlsx")
-Get_Output_File()
+
+class Main_Window_Mariser:
+        def __init__(self):
+                Root_Window = Tk()
+                Root_Window.title("Mariser!")
+                
+                Main_Frame = ttk.Frame(Root_Window)
+                Main_Frame.grid(column=0, row=0, sticky=(N, W, E, S))
+                
+                Root_Window.mainloop()
+                
+Main_Window_Mariser()                
