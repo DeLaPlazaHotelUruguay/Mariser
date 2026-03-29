@@ -1,6 +1,7 @@
 import openpyxl
 from tkinter import *
 from tkinter import ttk
+from PIL import Image, ImageTk
 import pdb
 import re
 
@@ -295,6 +296,13 @@ class Main_Window_Mariser:
                 Main_Frame = ttk.Frame(Root_Window)
                 Main_Frame.grid(column=0, row=0, sticky=(N, W, E, S))
                 
+                # Set the Logo
+                Logo_Image = Image.open(r'../Assets/Images/Hotel Logo.png').resize((125, 125))
+                Logo_Image = ImageTk.PhotoImage(Logo_Image)
+                Logo_Label = ttk.Label(Main_Frame)
+                Logo_Label['image'] = Logo_Image
+                Logo_Label.grid()
+                
                 Root_Window.mainloop()
                 
-Main_Window_Mariser()                
+Main_Window_Mariser()
