@@ -129,7 +129,7 @@ def Get_Lotes():
                         Current_Lote.Operations.append(Operation_Object)
         return Lotes
                         
-Lotes = Get_Lotes()
+# Lotes = Get_Lotes()
 
 # Build the output file
 from openpyxl import Workbook
@@ -289,7 +289,22 @@ def Get_Output_File():
         # Output_Workbook.save("Test.xlsx")
 
 class Main_Window_Mariser:
+        class Rule_Units:
+                """
+                I am unsure of exactly what will be the size in pixels of each element of the window...
+                Hoewever, I am sure of the proportion each element holds in relation to each other.
+                
+                So what I will do, is useing the very proportional element I have used for the sketch in
+                order to measure things: the rules of the notebook.
+                """
+                
+                def To_Pixels(Rule_Units):
+                        Pixel_Equivalency = 62
+                        return int( Rule_Units * Pixel_Equivalency )
+
         def __init__(self):
+                Rule_Units = self.Rule_Units
+                
                 Root_Window = Tk()
                 Root_Window.title("Mariser!")
                 
@@ -297,7 +312,7 @@ class Main_Window_Mariser:
                 Main_Frame.grid(column=0, row=0, sticky=(N, W, E, S))
                 
                 # Set the Logo
-                Logo_Image = Image.open(r'../Assets/Images/Hotel Logo.png').resize((125, 125))
+                Logo_Image = Image.open(r'../Assets/Images/Hotel Logo.png').resize(( Rule_Units.To_Pixels(2), Rule_Units.To_Pixels(2)))
                 Logo_Image = ImageTk.PhotoImage(Logo_Image)
                 Logo_Label = ttk.Label(Main_Frame)
                 Logo_Label['image'] = Logo_Image
