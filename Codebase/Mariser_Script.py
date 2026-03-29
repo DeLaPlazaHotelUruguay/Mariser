@@ -305,19 +305,33 @@ class Main_Window_Mariser:
         def __init__(self):
                 Rule_Units = self.Rule_Units
                 
+                # Grid Layout
+                ## Columns
+                
+                ## Rows
+                
                 Root_Window = Tk()
                 Root_Window.title("Mariser!")
                 
+                # Tailor the content frame
                 Main_Frame = ttk.Frame(Root_Window)
-                Main_Frame.grid(column=0, row=0, sticky=(N, W, E, S))
+                Main_Frame.grid(sticky=(N, W, E, S))
                 
                 # Set the Logo
-                Logo_Image = Image.open(r'../Assets/Images/Hotel Logo.png').resize(( Rule_Units.To_Pixels(2), Rule_Units.To_Pixels(2)))
+                Logo_Size = ( Rule_Units.To_Pixels(2), Rule_Units.To_Pixels(2)) # (Width, height)
+                Logo_Image = Image.open(r'../Assets/Images/Hotel Logo.png').resize(Logo_Size)
                 Logo_Image = ImageTk.PhotoImage(Logo_Image)
                 Logo_Label = ttk.Label(Main_Frame)
                 Logo_Label['image'] = Logo_Image
-                Logo_Label.grid()
+                Logo_Label.grid(column=1, row=1)
                 
+                # Space management
+                ## Frame padding
+                Rightmost_Column, Downmost_Row = Main_Frame.grid_size()
+                Main_Frame.rowconfigure(0, minsize=Rule_Units.To_Pixels(1))
+                Main_Frame.rowconfigure(Downmost_Row, minsize=Rule_Units.To_Pixels(1))
+                Main_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(1))
+                Main_Frame.columnconfigure(Rightmost_Column, minsize=Rule_Units.To_Pixels(1))
                 Root_Window.mainloop()
                 
 Main_Window_Mariser()
