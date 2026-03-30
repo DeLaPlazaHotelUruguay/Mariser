@@ -1,6 +1,7 @@
 import openpyxl
 from tkinter import *
 from tkinter import ttk
+from tkinter import font
 from PIL import Image, ImageTk
 import pdb
 import re
@@ -299,7 +300,7 @@ class Main_Window_Mariser:
                 """
                 
                 def To_Pixels(Rule_Units):
-                        Pixel_Equivalency = 62
+                        Pixel_Equivalency = 45
                         return int( Rule_Units * Pixel_Equivalency )
 
         def __init__(self):
@@ -324,14 +325,41 @@ class Main_Window_Mariser:
                 Logo_Label = ttk.Label(Main_Frame)
                 Logo_Label['image'] = Logo_Image
                 Logo_Label.grid(column=1, row=1)
+                                
+                # Set the Title and Subtitle Banner
+                Text_Frame = ttk.Frame(Main_Frame, width=Rule_Units.To_Pixels(5), height=Rule_Units.To_Pixels(2), borderwidth=10, relief='ridge')
+                Text_Frame.grid(column=3, row=1)
+                Text_Frame.grid_propagate(False)
+                
+                ## Append the Header Banner
+                Title_Banner_Size = (Rule_Units.To_Pixels(4), Rule_Units.To_Pixels(0.8))
+                Title_Banner_Image = Image.open(r'../Assets/Images/Header, Berlin Sans Demi Bold Banner.png').resize(Title_Banner_Size)
+                Title_Banner_Image = ImageTk.PhotoImage(Title_Banner_Image)
+                Title_Banner_Label = ttk.Label(Text_Frame, image=Title_Banner_Image)
+                Title_Banner_Label.grid(column=0, row=0, sticky='N')
+                ## Append the Subtitle
+                Subtitle_Label = ttk.Label(
+                                                Text_Frame,
+                                                text = 'Herramienta de control de mayores contables.',
+                                                font=font.Font(size=9),
+                                                wraplength=Rule_Units.To_Pixels(4.5),
+                                                justify='left'
+                                           )
+                Subtitle_Label.grid(column=0, row=3, padx=(Rule_Units.To_Pixels(0.3), 0))
                 
                 # Space management
+                Padding_Size = Rule_Units.To_Pixels(1)
+                
                 ## Frame padding
                 Rightmost_Column, Downmost_Row = Main_Frame.grid_size()
-                Main_Frame.rowconfigure(0, minsize=Rule_Units.To_Pixels(1))
-                Main_Frame.rowconfigure(Downmost_Row, minsize=Rule_Units.To_Pixels(1))
-                Main_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(1))
-                Main_Frame.columnconfigure(Rightmost_Column, minsize=Rule_Units.To_Pixels(1))
+                Main_Frame.rowconfigure(0, minsize=Padding_Size)
+                Main_Frame.rowconfigure(Downmost_Row, minsize=Padding_Size)
+                Main_Frame.columnconfigure(0, minsize=Padding_Size)
+                Main_Frame.columnconfigure(Rightmost_Column, minsize=Padding_Size)
+                
+                # Element padding
+                Main_Frame.columnconfigure(2, minsize=Padding_Size)
+                
                 Root_Window.mainloop()
                 
 Main_Window_Mariser()
