@@ -324,11 +324,11 @@ class Main_Window_Mariser:
                 Logo_Image = ImageTk.PhotoImage(Logo_Image)
                 Logo_Label = ttk.Label(Main_Frame)
                 Logo_Label['image'] = Logo_Image
-                Logo_Label.grid(column=1, row=1)
+                Logo_Label.grid(column=1, row=1, sticky='N')
                                 
                 # Set the Title and Subtitle Banner
                 Text_Frame = ttk.Frame(Main_Frame, width=Rule_Units.To_Pixels(5), height=Rule_Units.To_Pixels(2), borderwidth=10, relief='ridge')
-                Text_Frame.grid(column=3, row=1)
+                Text_Frame.grid(column=3, row=1, sticky='N')
                 Text_Frame.grid_propagate(False)
                 
                 ## Append the Header Banner
@@ -347,6 +347,19 @@ class Main_Window_Mariser:
                                            )
                 Subtitle_Label.grid(column=0, row=3, padx=(Rule_Units.To_Pixels(0.3), 0))
                 
+                # Set the terminal textbox
+                Terminal_Character_Width=45
+                Terminal_Character_Height=11
+                        # I took the default monospaced font in my system, measured it, and determined the amount of characters that got closer to 8 rules long, and 4 rules tall
+                        # If I end up making the window resizable, this system will definitely not work.
+                
+                Terminal_Widget = Text(Main_Frame, width=Terminal_Character_Width, height=Terminal_Character_Height)
+                Terminal_Widget.configure(font="TkFixedFont")
+                Custom_Font = font.nametofont("TkFixedFont")
+                print("1 character in monospace is: " + str(Custom_Font.measure(">")) + " piels long, and " + str(Custom_Font.metrics("linespace")) + " pixels tall")
+                Terminal_Widget.grid_propagate(False)
+                Terminal_Widget.grid(column=5, row=1, rowspan=4, sticky='N')
+                
                 # Space management
                 Padding_Size = Rule_Units.To_Pixels(1)
                 
@@ -359,6 +372,8 @@ class Main_Window_Mariser:
                 
                 # Element padding
                 Main_Frame.columnconfigure(2, minsize=Padding_Size)
+                Main_Frame.columnconfigure(4, minsize=Padding_Size)
+
                 
                 Root_Window.mainloop()
                 
