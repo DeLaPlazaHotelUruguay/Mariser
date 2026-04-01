@@ -1,4 +1,5 @@
 import openpyxl
+import tkinter
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
@@ -324,11 +325,11 @@ class Main_Window_Mariser:
                 Logo_Image = ImageTk.PhotoImage(Logo_Image)
                 Logo_Label = ttk.Label(Main_Frame)
                 Logo_Label['image'] = Logo_Image
-                Logo_Label.grid(column=1, row=1, sticky='N')
+                Logo_Label.grid(column=1, row=1, rowspan=2, sticky='N')
                                 
                 # Set the Title and Subtitle Banner
                 Text_Frame = ttk.Frame(Main_Frame, width=Rule_Units.To_Pixels(5), height=Rule_Units.To_Pixels(2), borderwidth=10, relief='ridge')
-                Text_Frame.grid(column=3, row=1, sticky='N')
+                Text_Frame.grid(column=3, row=1, rowspan=2, sticky='N')
                 Text_Frame.grid_propagate(False)
                 
                 ## Append the Header Banner
@@ -356,12 +357,42 @@ class Main_Window_Mariser:
                 Terminal_Widget = Text(Main_Frame, width=Terminal_Character_Width, height=Terminal_Character_Height)
                 Terminal_Widget.configure(font="TkFixedFont")
                 Custom_Font = font.nametofont("TkFixedFont")
-                print("1 character in monospace is: " + str(Custom_Font.measure(">")) + " piels long, and " + str(Custom_Font.metrics("linespace")) + " pixels tall")
                 Terminal_Widget.grid_propagate(False)
-                Terminal_Widget.grid(column=5, row=1, rowspan=4, sticky='N')
+                Terminal_Widget.grid(column=5, row=1, rowspan=4, columnspan=8, sticky='N')
+                
+                # Set the operation buttons
+                Dummy_Image = tkinter.PhotoImage(width=1, height=1) # https://stackoverflow.com/a/46286221
+                
+                Buttons_Frame = ttk.Frame(Main_Frame, height=Rule_Units.To_Pixels(3)) 
+                Buttons_Frame.columnconfigure(0, weight=1)
+                Buttons_Frame.columnconfigure(1, weight=0)
+                Buttons_Frame.columnconfigure(2, weight=1)
+
+                
+                File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente', height=Rule_Units.To_Pixels(1),
+                                             wraplength = 125, bg = 'firebrick2', fg = 'floral white', relief='solid',
+                                             activebackground = 'firebrick3', activeforeground = 'white smoke',
+                                             font = font.Font(weight='bold', size=9),
+                                             image=Dummy_Image, compound='c')
+                Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino', height=Rule_Units.To_Pixels(1),
+                                                  wraplength = 130, bg = 'yellow', fg = 'black', relief='solid',
+                                                  activebackground = 'gold2', activeforeground = 'black',
+                                                  font = font.Font(weight='bold', size=9),
+                                                  image=Dummy_Image, compound='c')
+                Generate_Button = tkinter.Button(Buttons_Frame, text='Generar!', height=Rule_Units.To_Pixels(1),
+                                                 bg = 'DarkOliveGreen3', fg = 'white', relief='solid',
+                                                 activebackground = 'DarkOliveGreen4', activeforeground = 'snow',
+                                                 font = font.Font(weight='bold', size=12),
+                                                 image=Dummy_Image, compound='c')
+                                                 
+                Buttons_Frame.grid(column=5, row=6, rowspan=3, columnspan=8, sticky='NWE')
+                File_Button.grid(column=0, row=0, sticky='NWE')
+                Directory_Button.grid(column=2, row=0, sticky='NWE')
+                Generate_Button.grid(column=0, row=3, columnspan=3, sticky='nwe')
                 
                 # Space management
                 Padding_Size = Rule_Units.To_Pixels(1)
+                Half_Padding = int(Padding_Size / 2)
                 
                 ## Frame padding
                 Rightmost_Column, Downmost_Row = Main_Frame.grid_size()
@@ -373,7 +404,11 @@ class Main_Window_Mariser:
                 # Element padding
                 Main_Frame.columnconfigure(2, minsize=Padding_Size)
                 Main_Frame.columnconfigure(4, minsize=Padding_Size)
-
+                Main_Frame.columnconfigure(5, minsize=Padding_Size)
+                Main_Frame.rowconfigure(5, minsize=Half_Padding)
+                
+                Buttons_Frame.columnconfigure(1, minsize=Half_Padding)
+                Buttons_Frame.rowconfigure(1, minsize=Half_Padding)
                 
                 Root_Window.mainloop()
                 
