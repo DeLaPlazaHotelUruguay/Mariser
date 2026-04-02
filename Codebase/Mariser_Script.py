@@ -360,6 +360,11 @@ class Main_Window_Mariser:
                 Terminal_Widget.grid_propagate(False)
                 Terminal_Widget.grid(column=5, row=1, rowspan=4, columnspan=8, sticky='N')
                 
+                ## Add the scrolbar for the terminal
+                Terminal_Scrollbar = ttk.Scrollbar(Main_Frame, orient=VERTICAL, command=Terminal_Widget.yview)
+                Terminal_Widget['yscrollcommand'] = Terminal_Scrollbar.set
+                Terminal_Scrollbar.grid(column=14, row=1, rowspan=4, sticky='NS')
+                
                 # Set the operation buttons
                 Dummy_Image = tkinter.PhotoImage(width=1, height=1) # https://stackoverflow.com/a/46286221
                 
@@ -428,9 +433,9 @@ class Main_Window_Mariser:
                 Buttons_Frame.columnconfigure(1, minsize=Half_Padding)
                 Buttons_Frame.rowconfigure(1, minsize=Half_Padding)
                 
-                #Corner_Buttons_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(1))
+                # Element size
                 Corner_Buttons_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(0.25))
-                #Corner_Buttons_Frame.columnconfigure(2, minsize=Rule_Units.To_Pixels(1))
+                Main_Frame.columnconfigure(6, minsize=Rule_Units.To_Pixels(0.3))
                 
                 Root_Window.mainloop()
                 
