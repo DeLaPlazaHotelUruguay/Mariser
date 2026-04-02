@@ -371,7 +371,7 @@ class Main_Window_Mariser:
                 
                 File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente', height=Rule_Units.To_Pixels(1),
                                              wraplength = 125, bg = 'firebrick2', fg = 'floral white', relief='solid',
-                                             activebackground = 'firebrick3', activeforeground = 'white smoke',
+                                             activebackground = 'firebrick3', activeforeground = 'white smoke',                                                                                                                                                                                              
                                              font = font.Font(weight='bold', size=9),
                                              image=Dummy_Image, compound='c')
                 Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino', height=Rule_Units.To_Pixels(1),
@@ -390,6 +390,22 @@ class Main_Window_Mariser:
                 Directory_Button.grid(column=2, row=0, sticky='NWE')
                 Generate_Button.grid(column=0, row=3, columnspan=3, sticky='nwe')
                 
+                # Add the lower left corner buttons
+                Corner_Buttons_Frame = ttk.Frame(Main_Frame, height=Rule_Units.To_Pixels(1.5), width=Rule_Units.To_Pixels(2.25), relief='solid', borderwidth=10)
+                Corner_Buttons_Frame.grid(column=1, row=11, columnspan=4, sticky='w')               
+                
+                Icons_Size = ( Rule_Units.To_Pixels(1), Rule_Units.To_Pixels(1)) # (Width, height)
+                Exit_Image = Image.open(r'../Assets/Images/Exit Icon.png').resize(Icons_Size)
+                Info_Image = Image.open(r'../Assets/Images/Info Icon.png').resize(Icons_Size)
+                Info_Image = ImageTk.PhotoImage(Info_Image)
+                Exit_Image = ImageTk.PhotoImage(Exit_Image)
+                
+                Info_Button = tkinter.Button(Corner_Buttons_Frame, image=Info_Image, relief='groove', borderwidth=3)
+                Exit_Button = tkinter.Button(Corner_Buttons_Frame, image=Exit_Image, relief='groove', borderwidth=3)
+                
+                Info_Button.grid(column=0, row=0)
+                Exit_Button.grid(column=2, row=0)
+                
                 # Space management
                 Padding_Size = Rule_Units.To_Pixels(1)
                 Half_Padding = int(Padding_Size / 2)
@@ -407,8 +423,14 @@ class Main_Window_Mariser:
                 Main_Frame.columnconfigure(5, minsize=Padding_Size)
                 Main_Frame.rowconfigure(5, minsize=Half_Padding)
                 
+                Main_Frame.rowconfigure(10, minsize=Half_Padding)
+                
                 Buttons_Frame.columnconfigure(1, minsize=Half_Padding)
                 Buttons_Frame.rowconfigure(1, minsize=Half_Padding)
+                
+                #Corner_Buttons_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(1))
+                Corner_Buttons_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(0.25))
+                #Corner_Buttons_Frame.columnconfigure(2, minsize=Rule_Units.To_Pixels(1))
                 
                 Root_Window.mainloop()
                 
