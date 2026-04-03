@@ -320,12 +320,11 @@ class Main_Window_Mariser:
                 Logo_Image = ImageTk.PhotoImage(Logo_Image)
                 Logo_Label = ttk.Label(Main_Frame)
                 Logo_Label['image'] = Logo_Image
-                Logo_Label.grid(column=1, row=1, rowspan=2, sticky='N')
+                Logo_Label.grid(column=1, row=1, sticky='NWES')
                                 
                 # Set the Title and Subtitle Banner
-                Text_Frame = ttk.Frame(Main_Frame, width=Rule_Units.To_Pixels(5), height=Rule_Units.To_Pixels(2), borderwidth=10, relief='ridge')
-                Text_Frame.grid(column=3, row=1, rowspan=2, sticky='N')
-                Text_Frame.grid_propagate(False)
+                Text_Frame = ttk.Frame(Main_Frame, borderwidth=10, relief='ridge')
+                Text_Frame.grid(column=3, row=1, sticky='NSWE')
                 
                 ## Append the Header Banner
                 Title_Banner_Size = (Rule_Units.To_Pixels(4), Rule_Units.To_Pixels(0.8))
@@ -420,6 +419,10 @@ class Main_Window_Mariser:
                 # Element size
                 ## Multielement
                 Main_Frame.rowconfigure(1, minsize=Rule_Units.To_Pixels(2))
+                ## Logo Banner
+                Main_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(2))
+                ## Text Banner
+                Main_Frame.columnconfigure(3, minsize=Rule_Units.To_Pixels(5))
                 ## Corner Buttons
                 Corner_Buttons_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(0.25))
                 ## Operation Buttons
