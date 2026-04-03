@@ -309,6 +309,10 @@ class Main_Window_Mariser:
 
                 Root_Window = Tk()
                 Root_Window.resizable(width=False, height=False)
+                try:
+                        Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Window Icon.png'))
+                        Root_Window.wm_iconphoto(True, Icon_Image)
+                except FileNotFoundError: pass
                 Root_Window.title("Mariser!")
                 
                 # Tailor the content frame
