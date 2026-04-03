@@ -407,7 +407,7 @@ class Main_Window_Mariser:
                 
                 # Element padding
                 ## Multielement
-                Main_Frame.columnconfigure(2, minsize=Padding_Size)
+                Main_Frame.columnconfigure(2, minsize=Half_Padding)
                 Main_Frame.columnconfigure(4, minsize=Padding_Size)
                 Main_Frame.rowconfigure(5, minsize=Half_Padding)
                 Main_Frame.rowconfigure(10, minsize=Half_Padding)
@@ -416,9 +416,9 @@ class Main_Window_Mariser:
                 Buttons_Frame.rowconfigure(1, minsize=Half_Padding)
                 Buttons_Frame.columnconfigure(1, weight=0)
                 ## Corner Buttons
-                Corner_Buttons_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(0.33))
-                Corner_Buttons_Frame.columnconfigure(2, minsize=Rule_Units.To_Pixels(0.33))
-                Corner_Buttons_Frame.columnconfigure(4, minsize=Rule_Units.To_Pixels(0.33))
+                Corner_Buttons_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(0.16))
+                Corner_Buttons_Frame.columnconfigure(2, minsize=Rule_Units.To_Pixels(0.16))
+                Corner_Buttons_Frame.columnconfigure(4, minsize=Rule_Units.To_Pixels(0.16))
                 Corner_Buttons_Frame.rowconfigure(0, minsize=Rule_Units.To_Pixels(0.25))
                 Corner_Buttons_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(0.25))
 
