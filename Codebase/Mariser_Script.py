@@ -306,12 +306,7 @@ class Main_Window_Mariser:
 
         def __init__(self):
                 Rule_Units = self.Rule_Units
-                
-                # Grid Layout
-                ## Columns
-                
-                ## Rows
-                
+
                 Root_Window = Tk()
                 Root_Window.title("Mariser!")
                 
@@ -349,21 +344,15 @@ class Main_Window_Mariser:
                 Subtitle_Label.grid(column=0, row=3, padx=(Rule_Units.To_Pixels(0.3), 0))
                 
                 # Set the terminal textbox
-                Terminal_Character_Width=45
-                Terminal_Character_Height=11
-                        # I took the default monospaced font in my system, measured it, and determined the amount of characters that got closer to 8 rules long, and 4 rules tall
-                        # If I end up making the window resizable, this system will definitely not work.
-                
-                Terminal_Widget = Text(Main_Frame, width=Terminal_Character_Width, height=Terminal_Character_Height)
+                Terminal_Widget = Text(Main_Frame, width=1, height=1) # The width and heihgt value is just so it doesn't assign itself a value by default
                 Terminal_Widget.configure(font="TkFixedFont")
                 Custom_Font = font.nametofont("TkFixedFont")
-                Terminal_Widget.grid_propagate(False)
-                Terminal_Widget.grid(column=5, row=1, rowspan=4, columnspan=8, sticky='N')
+                Terminal_Widget.grid(column=5, row=1, rowspan=2, sticky='NWES')
                 
                 ## Add the scrolbar for the terminal
                 Terminal_Scrollbar = ttk.Scrollbar(Main_Frame, orient=VERTICAL, command=Terminal_Widget.yview)
                 Terminal_Widget['yscrollcommand'] = Terminal_Scrollbar.set
-                Terminal_Scrollbar.grid(column=14, row=1, rowspan=4, sticky='NS')
+                Terminal_Scrollbar.grid(column=6, row=1, rowspan=2, sticky='NS')
                 
                 # Set the operation buttons
                 Dummy_Image = tkinter.PhotoImage(width=1, height=1) # https://stackoverflow.com/a/46286221
@@ -390,7 +379,7 @@ class Main_Window_Mariser:
                                                  font = font.Font(weight='bold', size=12),
                                                  image=Dummy_Image, compound='c')
                                                  
-                Buttons_Frame.grid(column=5, row=6, rowspan=3, columnspan=8, sticky='NWE')
+                Buttons_Frame.grid(column=5, row=6, rowspan=3, columnspan=2, sticky='NWE')
                 File_Button.grid(column=0, row=0, sticky='NWE')
                 Directory_Button.grid(column=2, row=0, sticky='NWE')
                 Generate_Button.grid(column=0, row=3, columnspan=3, sticky='nwe')
@@ -425,16 +414,20 @@ class Main_Window_Mariser:
                 # Element padding
                 Main_Frame.columnconfigure(2, minsize=Padding_Size)
                 Main_Frame.columnconfigure(4, minsize=Padding_Size)
-                Main_Frame.columnconfigure(5, minsize=Padding_Size)
                 Main_Frame.rowconfigure(5, minsize=Half_Padding)
-                
                 Main_Frame.rowconfigure(10, minsize=Half_Padding)
                 
                 Buttons_Frame.columnconfigure(1, minsize=Half_Padding)
                 Buttons_Frame.rowconfigure(1, minsize=Half_Padding)
                 
                 # Element size
+                ## Multielement
+                Main_Frame.rowconfigure(1, minsize=Rule_Units.To_Pixels(2))
+                ## Corner Buttons
                 Corner_Buttons_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(0.25))
+                ## Terminal and its scrollbar
+                Main_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(2))
+                Main_Frame.columnconfigure(5, minsize=Rule_Units.To_Pixels(7.7))
                 Main_Frame.columnconfigure(6, minsize=Rule_Units.To_Pixels(0.3))
                 
                 Root_Window.mainloop()
