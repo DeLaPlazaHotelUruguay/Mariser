@@ -379,8 +379,8 @@ class Main_Window_Mariser:
                 Generate_Button.grid(column=0, row=2, columnspan=3, sticky='NWES')
                 
                 # Add the lower left corner buttons
-                Corner_Buttons_Frame = ttk.Frame(Main_Frame, height=Rule_Units.To_Pixels(1.5), width=Rule_Units.To_Pixels(2.25), relief='solid', borderwidth=10)
-                Corner_Buttons_Frame.grid(column=1, row=11, columnspan=4, sticky='w')               
+                Corner_Buttons_Frame = ttk.Frame(Main_Frame, relief='solid')
+                Corner_Buttons_Frame.grid(column=1, row=11, columnspan=2, sticky='NWES')               
                 
                 Icons_Size = ( Rule_Units.To_Pixels(1), Rule_Units.To_Pixels(1)) # (Width, height)
                 Exit_Image = Image.open(r'../Assets/Images/Exit Icon.png').resize(Icons_Size)
@@ -391,8 +391,8 @@ class Main_Window_Mariser:
                 Info_Button = tkinter.Button(Corner_Buttons_Frame, image=Info_Image, relief='groove', borderwidth=3)
                 Exit_Button = tkinter.Button(Corner_Buttons_Frame, image=Exit_Image, relief='groove', borderwidth=3)
                 
-                Info_Button.grid(column=0, row=0)
-                Exit_Button.grid(column=2, row=0)
+                Info_Button.grid(column=1, row=1, sticky='NWES')
+                Exit_Button.grid(column=3, row=1, sticky='NWES')
                 
                 # Space management
                 Padding_Size = Rule_Units.To_Pixels(1)
@@ -415,6 +415,13 @@ class Main_Window_Mariser:
                 Buttons_Frame.columnconfigure(1, minsize=Half_Padding)
                 Buttons_Frame.rowconfigure(1, minsize=Half_Padding)
                 Buttons_Frame.columnconfigure(1, weight=0)
+                ## Corner Buttons
+                Corner_Buttons_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(0.33))
+                Corner_Buttons_Frame.columnconfigure(2, minsize=Rule_Units.To_Pixels(0.33))
+                Corner_Buttons_Frame.columnconfigure(4, minsize=Rule_Units.To_Pixels(0.33))
+                Corner_Buttons_Frame.rowconfigure(0, minsize=Rule_Units.To_Pixels(0.25))
+                Corner_Buttons_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(0.25))
+
                 
                 # Element size
                 ## Multielement
@@ -423,19 +430,21 @@ class Main_Window_Mariser:
                 Main_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(2))
                 ## Text Banner
                 Main_Frame.columnconfigure(3, minsize=Rule_Units.To_Pixels(5))
-                ## Corner Buttons
-                Corner_Buttons_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(0.25))
+                ## Terminal and its scrollbar
+                Main_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(2))
+                Main_Frame.columnconfigure(5, minsize=Rule_Units.To_Pixels(7.7))
+                Main_Frame.columnconfigure(6, minsize=Rule_Units.To_Pixels(0.3))
                 ## Operation Buttons
                 Main_Frame.rowconfigure(6, minsize=Rule_Units.To_Pixels(3))
                 Buttons_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(3.75))
                 Buttons_Frame.columnconfigure(2, minsize=Rule_Units.To_Pixels(3.75))
                 Buttons_Frame.rowconfigure(0, minsize=Rule_Units.To_Pixels(1.25))
                 Buttons_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(1.25))
-
-                ## Terminal and its scrollbar
-                Main_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(2))
-                Main_Frame.columnconfigure(5, minsize=Rule_Units.To_Pixels(7.7))
-                Main_Frame.columnconfigure(6, minsize=Rule_Units.To_Pixels(0.3))
+                ## Corner Buttons
+                Main_Frame.rowconfigure(11, minsize=Rule_Units.To_Pixels(1.5))
+                Corner_Buttons_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(1))
+                Corner_Buttons_Frame.columnconfigure(3, minsize=Rule_Units.To_Pixels(1))
+                Corner_Buttons_Frame.rowconfigure(1, minsize=Rule_Units.To_Pixels(1))
                 
                 Root_Window.mainloop()
                 
