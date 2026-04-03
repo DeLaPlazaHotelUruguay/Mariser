@@ -380,7 +380,7 @@ class Main_Window_Mariser:
                 
                 # Add the lower left corner buttons
                 Corner_Buttons_Frame = ttk.Frame(Main_Frame, relief='solid')
-                Corner_Buttons_Frame.grid(column=1, row=11, columnspan=2, sticky='NWES')               
+                Corner_Buttons_Frame.grid(column=1, row=11, columnspan=2, sticky='NWES')
                 
                 Icons_Size = ( Rule_Units.To_Pixels(1), Rule_Units.To_Pixels(1)) # (Width, height)
                 Exit_Image = Image.open(r'../Assets/Images/Exit Icon.png').resize(Icons_Size)
@@ -389,7 +389,7 @@ class Main_Window_Mariser:
                 Exit_Image = ImageTk.PhotoImage(Exit_Image)
                 
                 Info_Button = tkinter.Button(Corner_Buttons_Frame, image=Info_Image, relief='groove', borderwidth=3)
-                Exit_Button = tkinter.Button(Corner_Buttons_Frame, image=Exit_Image, relief='groove', borderwidth=3)
+                Exit_Button = tkinter.Button(Corner_Buttons_Frame, image=Exit_Image, relief='groove', borderwidth=3, command=Root_Window.destroy)
                 
                 Info_Button.grid(column=1, row=1, sticky='NWES')
                 Exit_Button.grid(column=3, row=1, sticky='NWES')
