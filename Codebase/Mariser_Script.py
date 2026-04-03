@@ -308,6 +308,7 @@ class Main_Window_Mariser:
                 Rule_Units = self.Rule_Units
 
                 Root_Window = Tk()
+                Root_Window.resizable(width=False, height=False)
                 Root_Window.title("Mariser!")
                 
                 # Tailor the content frame
