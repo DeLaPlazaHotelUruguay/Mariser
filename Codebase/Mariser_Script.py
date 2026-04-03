@@ -357,32 +357,27 @@ class Main_Window_Mariser:
                 # Set the operation buttons
                 Dummy_Image = tkinter.PhotoImage(width=1, height=1) # https://stackoverflow.com/a/46286221
                 
-                Buttons_Frame = ttk.Frame(Main_Frame, height=Rule_Units.To_Pixels(3)) 
-                Buttons_Frame.columnconfigure(0, weight=1)
-                Buttons_Frame.columnconfigure(1, weight=0)
-                Buttons_Frame.columnconfigure(2, weight=1)
-
-                
-                File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente', height=Rule_Units.To_Pixels(1),
+                Buttons_Frame = ttk.Frame(Main_Frame)
+                File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente',
                                              wraplength = 125, bg = 'firebrick2', fg = 'floral white', relief='solid',
                                              activebackground = 'firebrick3', activeforeground = 'white smoke',                                                                                                                                                                                              
                                              font = font.Font(weight='bold', size=9),
                                              image=Dummy_Image, compound='c')
-                Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino', height=Rule_Units.To_Pixels(1),
+                Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino',
                                                   wraplength = 130, bg = 'yellow', fg = 'black', relief='solid',
                                                   activebackground = 'gold2', activeforeground = 'black',
                                                   font = font.Font(weight='bold', size=9),
                                                   image=Dummy_Image, compound='c')
-                Generate_Button = tkinter.Button(Buttons_Frame, text='Generar!', height=Rule_Units.To_Pixels(1),
+                Generate_Button = tkinter.Button(Buttons_Frame, text='Generar!',
                                                  bg = 'DarkOliveGreen3', fg = 'white', relief='solid',
                                                  activebackground = 'DarkOliveGreen4', activeforeground = 'snow',
                                                  font = font.Font(weight='bold', size=12),
                                                  image=Dummy_Image, compound='c')
                                                  
-                Buttons_Frame.grid(column=5, row=6, rowspan=3, columnspan=2, sticky='NWE')
-                File_Button.grid(column=0, row=0, sticky='NWE')
-                Directory_Button.grid(column=2, row=0, sticky='NWE')
-                Generate_Button.grid(column=0, row=3, columnspan=3, sticky='nwe')
+                Buttons_Frame.grid(column=5, row=6, columnspan=2, sticky='NWES')
+                File_Button.grid(column=0, row=0, sticky='NWES')
+                Directory_Button.grid(column=2, row=0, sticky='NWES')
+                Generate_Button.grid(column=0, row=2, columnspan=3, sticky='NWES')
                 
                 # Add the lower left corner buttons
                 Corner_Buttons_Frame = ttk.Frame(Main_Frame, height=Rule_Units.To_Pixels(1.5), width=Rule_Units.To_Pixels(2.25), relief='solid', borderwidth=10)
@@ -412,19 +407,28 @@ class Main_Window_Mariser:
                 Main_Frame.columnconfigure(Rightmost_Column, minsize=Padding_Size)
                 
                 # Element padding
+                ## Multielement
                 Main_Frame.columnconfigure(2, minsize=Padding_Size)
                 Main_Frame.columnconfigure(4, minsize=Padding_Size)
                 Main_Frame.rowconfigure(5, minsize=Half_Padding)
                 Main_Frame.rowconfigure(10, minsize=Half_Padding)
-                
+                ## Operation Buttons
                 Buttons_Frame.columnconfigure(1, minsize=Half_Padding)
                 Buttons_Frame.rowconfigure(1, minsize=Half_Padding)
+                Buttons_Frame.columnconfigure(1, weight=0)
                 
                 # Element size
                 ## Multielement
                 Main_Frame.rowconfigure(1, minsize=Rule_Units.To_Pixels(2))
                 ## Corner Buttons
                 Corner_Buttons_Frame.columnconfigure(1, minsize=Rule_Units.To_Pixels(0.25))
+                ## Operation Buttons
+                Main_Frame.rowconfigure(6, minsize=Rule_Units.To_Pixels(3))
+                Buttons_Frame.columnconfigure(0, minsize=Rule_Units.To_Pixels(3.75))
+                Buttons_Frame.columnconfigure(2, minsize=Rule_Units.To_Pixels(3.75))
+                Buttons_Frame.rowconfigure(0, minsize=Rule_Units.To_Pixels(1.25))
+                Buttons_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(1.25))
+
                 ## Terminal and its scrollbar
                 Main_Frame.rowconfigure(2, minsize=Rule_Units.To_Pixels(2))
                 Main_Frame.columnconfigure(5, minsize=Rule_Units.To_Pixels(7.7))
