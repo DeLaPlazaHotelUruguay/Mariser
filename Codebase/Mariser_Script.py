@@ -303,10 +303,49 @@ class Main_Window_Mariser:
                 def To_Pixels(Rule_Units):
                         Pixel_Equivalency = 45
                         return int( Rule_Units * Pixel_Equivalency )
-
+        
         def __init__(self):
                 Rule_Units = self.Rule_Units
 
+                def Create_Info_Window():
+                        def Center_Toplevel(parent, toplevel):
+                                # Source: https://chatgpt.com/s/t_69d0924b0ed4819184d50c851c3a49c0
+                                
+                                parent.update_idletasks()
+                                toplevel.update_idletasks()
+
+                                # Parent geometry
+                                parent_x = parent.winfo_rootx()
+                                parent_y = parent.winfo_rooty()
+                                parent_width = parent.winfo_width()
+                                parent_height = parent.winfo_height()
+
+                                # Toplevel size
+                                width = toplevel.winfo_width()
+                                height = toplevel.winfo_height()
+
+                                # Compute centered position
+                                x = parent_x + (parent_width // 2) - (width // 2)
+                                y = parent_y + (parent_height // 2) - (height // 2)
+
+                                toplevel.geometry(f"{width}x{height}+{x}+{y}")
+                        
+                        Info_Modal_Window = tkinter.Toplevel(Root_Window)
+                        Info_Modal_Window.resizable(width=False, height=False)
+                        Info_Modal_Window.title("Info: Mariser!")
+                        
+                        
+                        Info_Modal_Window.transient(Root_Window)
+                        Info_Modal_Window.grab_set()
+                        Center_Toplevel(Root_Window, Info_Modal_Window)
+                        
+                        Info_Frame = ttk.Frame(Info_Modal_Window)
+                        
+                        
+                        
+                        
+                                
+                        
                 Root_Window = Tk()
                 Root_Window.resizable(width=False, height=False)
                 try:
@@ -393,7 +432,7 @@ class Main_Window_Mariser:
                 Info_Image = ImageTk.PhotoImage(Info_Image)
                 Exit_Image = ImageTk.PhotoImage(Exit_Image)
                 
-                Info_Button = tkinter.Button(Corner_Buttons_Frame, image=Info_Image, relief='groove', borderwidth=3)
+                Info_Button = tkinter.Button(Corner_Buttons_Frame, image=Info_Image, relief='groove', borderwidth=3, command=Create_Info_Window)
                 Exit_Button = tkinter.Button(Corner_Buttons_Frame, image=Exit_Image, relief='groove', borderwidth=3, command=Root_Window.destroy)
                 
                 Info_Button.grid(column=1, row=1, sticky='NWES')
