@@ -335,11 +335,55 @@ class Main_Window_Mariser:
                         Info_Modal_Window.title("Info: Mariser!")
                         
                         
-                        Info_Modal_Window.transient(Root_Window)
-                        Info_Modal_Window.grab_set()
-                        Center_Toplevel(Root_Window, Info_Modal_Window)
+                        #Info_Modal_Window.transient(Root_Window)
+                        #Info_Modal_Window.grab_set()
+                        #Center_Toplevel(Root_Window, Info_Modal_Window)
                         
                         Info_Frame = ttk.Frame(Info_Modal_Window)
+                        Info_Frame.grid(sticky='NEWS')
+                        
+                        # Add the Scale Image Banner
+                        Logo_Size2 = ( Rule_Units.To_Pixels(2), Rule_Units.To_Pixels(2)) # (Width, height)
+                        Scale_Image = Image.open(r'../Assets/Images/Window Icon.png').resize(Logo_Size2)
+                        Scale_Image = ImageTk.PhotoImage(Scale_Image)
+                        
+                        Scale_Banner = ttk.Label(Info_Frame, image=Scale_Image) # I have no idea why is it that tkinter is such a bitch with this image thing,
+                        Scale_Banner.image = Scale_Image                        # cuz only passing the image on construction doesn't work, setting it with .image
+                        Scale_Banner.grid(column=1, row=1, sticky='NEWS')       # alone doesn't work, Banner['image'] = image doesn't seem to work... But I'm done with all of this.
+                        
+                        # Add the title
+                        Title_Frame = ttk.Frame(Info_Frame)
+                        Title_Frame.grid(column=3, row=1)
+                        
+                        Title_Image_Size = (Rule_Units.To_Pixels(1.33), Rule_Units.To_Pixels(0.89))
+                        Title_Image = ImageTk.getimage(Title_Banner_Image).resize(Title_Image_Size)
+                        Image_Width, Image_Height = Title_Image.size
+                        Title_Image = Title_Image.crop(Title_Image.getbbox())
+                        Title_Image = ImageTk.PhotoImage(Title_Image)
+                        Title_Label1 = ttk.Label(Title_Frame, image=Title_Image)
+                        Title_Label2 = ttk.Label(Title_Frame, text = ' es un programa para automatizar el control de los lotes.')
+                        Title_Label1.image = Title_Image
+                        Title_Label1.grid(column=0, row=0, sticky='WS')
+                        Title_Label2.grid(column=1, row=0, sticky='WS')
+                        
+                        # Add subtitle
+                        Subtitle_Label = ttk.Label(Title_Frame, wraplength=Rule_Units.To_Pixels(8), text='Es un regalo🎁 de Lucas para Marisa, ojalá tu vida sea un poco más fácil con esto :)')
+                        Subtitle_Label.grid(column=0, columnspan=3, row=1, sticky='W')
+                        
+                        # Frame Padding
+                        Padding_Size = Rule_Units.To_Pixels(0.5)
+                        Half_Padding = int(Padding_Size/2)
+                        
+                        Rightmost_Column, Downmost_Row = Info_Frame.grid_size()
+                        Info_Frame.rowconfigure(0, minsize=Padding_Size)
+                        Info_Frame.rowconfigure(Downmost_Row, minsize=Padding_Size)
+                        Info_Frame.columnconfigure(0, minsize=Padding_Size)
+                        Info_Frame.columnconfigure(Rightmost_Column, minsize=Padding_Size)
+                        
+                        # Element Padding
+                        ## Title
+                        Info_Frame.columnconfigure(2, minsize=Padding_Size)
+                        
                         
                         
                         
