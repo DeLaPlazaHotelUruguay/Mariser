@@ -311,7 +311,9 @@ class Main_Window_Mariser:
                 
                 #> Program parameters
                 global Source_File_Path
+                global Output_Directory_Path
                 Source_File_Path = ''
+                Output_Directory_Path = ''
                 
                 #> Execution
                 # Set DPI awareness(makes the UI look HD lol)
@@ -461,6 +463,15 @@ class Main_Window_Mariser:
                         File_Path = tkinter.filedialog.askopenfilename(parent=Root_Window, initialdir=Home_Dir, filetypes=[('Archivo de Excel', '*.xlsx')])
                         if File_Path: Source_File_Path = File_Path
                         else: pass
+                        
+                def Select_Output_Directory():
+                        global Output_Directory_Path
+                        Directory_Path = ''
+                        Home_Dir = home = os.path.expanduser('~')
+
+                        Directory_Path = tkinter.filedialog.askdirectory(parent=Root_Window, initialdir=Home_Dir, mustexist=True)
+                        if Directory_Path: Output_Directory_Path = Directory_Path
+                        else: pass
                 
                 Root_Window = Tk()
                 Root_Window.resizable(width=False, height=False)
@@ -522,7 +533,7 @@ class Main_Window_Mariser:
                                              activebackground = 'firebrick3', activeforeground = 'white smoke',                                                                                                                                                                                              
                                              font = font.Font(weight='bold', size=9),
                                              image=Dummy_Image, compound='c')
-                Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino',
+                Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino', command=Select_Output_Directory,
                                                   wraplength = Rule_Units.To_Pixels(2.9), bg = 'yellow', fg = 'black', relief='solid',
                                                   activebackground = 'gold2', activeforeground = 'black',
                                                   font = font.Font(weight='bold', size=9),
