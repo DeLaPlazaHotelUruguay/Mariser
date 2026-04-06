@@ -301,18 +301,38 @@ class Main_Window_Mariser:
                 """
                 
                 def To_Pixels(Rule_Units):
-                        Pixel_Equivalency = 45
+                        Pixel_Equivalency = 55
                         return int( Rule_Units * Pixel_Equivalency )
         
         def __init__(self):
                 Rule_Units = self.Rule_Units
+                
+                # Set DPI awareness(makes the UI look HD lol)
+                from sys import platform
+                if platform in ('win32', 'darwin'):
+                        import ctypes
+                        try: # >= win 8.1
+                            ctypes.windll.shcore.SetProcessDpiAwareness(2)
+                        except: # win 8.0 or less
+                            ctypes.windll.user32.SetProcessDPIAware()
 
                 def Create_Info_Window():
                         def Center_Toplevel(parent, toplevel):
-                                # Source: https://chatgpt.com/s/t_69d0924b0ed4819184d50c851c3a49c0
+                                def Get_TitleBar_Height():
+                                # Source: Adapted from: https://stackoverflow.com/a/61492953
+                                        TitleBar_Height = 0
+                                        
+                                        if platform not in ('win32', 'darwin'): return 0
+                                        # All of the dpi thing is done above cuz it makes the whole interface look nicer :)
+                                        offset_y = int(toplevel.geometry().rsplit('+', 1)[-1])
+
+                                        TitleBar_Height = toplevel.winfo_rooty() - offset_y
+                                        return TitleBar_Height
                                 
+                                # Source: https://chatgpt.com/s/t_69d0924b0ed4819184d50c851c3a49c0
                                 parent.update_idletasks()
                                 toplevel.update_idletasks()
+                                Title_Bars_Height = ( Get_TitleBar_Height() * 2 )
 
                                 # Parent geometry
                                 parent_x = parent.winfo_rootx()
@@ -321,23 +341,18 @@ class Main_Window_Mariser:
                                 parent_height = parent.winfo_height()
 
                                 # Toplevel size
-                                width = toplevel.winfo_width()
-                                height = toplevel.winfo_height()
+                                width = ( toplevel.winfo_width() + Title_Bars_Height )
+                                height = ( toplevel.winfo_height() + Title_Bars_Height )
 
                                 # Compute centered position
-                                x = parent_x + (parent_width // 2) - (width // 2)
-                                y = parent_y + (parent_height // 2) - (height // 2)
+                                x = parent_x + ( ( parent_width - width ) // 2 )
+                                y = parent_y + ( ( parent_height - height ) // 2 )
 
-                                toplevel.geometry(f"{width}x{height}+{x}+{y}")
+                                toplevel.geometry(f"+{x}+{y}")
                         
                         Info_Modal_Window = tkinter.Toplevel(Root_Window)
                         Info_Modal_Window.resizable(width=False, height=False)
                         Info_Modal_Window.title("Info: Mariser!")
-                        
-                        
-                        #Info_Modal_Window.transient(Root_Window)
-                        #Info_Modal_Window.grab_set()
-                        #Center_Toplevel(Root_Window, Info_Modal_Window)
                         
                         Info_Frame = ttk.Frame(Info_Modal_Window)
                         Info_Frame.grid(sticky='NEWS')
@@ -370,6 +385,43 @@ class Main_Window_Mariser:
                         Subtitle_Label = ttk.Label(Title_Frame, wraplength=Rule_Units.To_Pixels(8), text='Es un regalo🎁 de Lucas para Marisa, ojalá tu vida sea un poco más fácil con esto :)')
                         Subtitle_Label.grid(column=0, columnspan=3, row=1, sticky='W')
                         
+                        # Add the acknowldegments
+                        Acknowledgements_Frame = ttk.Frame(Info_Frame)
+                        Acknowledgements_Frame.grid(column=1, columnspan=3, row=5, sticky='W')
+                        
+                        Icons_Size = (Rule_Units.To_Pixels(0.75),  Rule_Units.To_Pixels(0.75))
+                       
+                        Python_Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Python Logo.png').resize(Icons_Size))
+                        Github_Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Github Logo.png').resize(Icons_Size))
+                        Hotel_Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Hotel Logo.png').resize(Icons_Size))
+                        Python_Label1 = ttk.Label(Acknowledgements_Frame, image=Python_Icon_Image)
+                        Github_Label1 = ttk.Label(Acknowledgements_Frame, image=Github_Icon_Image)
+                        Hotel_Label1 = ttk.Label(Acknowledgements_Frame, image=Hotel_Icon_Image)
+                        Python_Label1.image = Python_Icon_Image
+                        Github_Label1.image = Github_Icon_Image
+                        Hotel_Label1.image = Hotel_Icon_Image
+                        
+                        Python_Label1.grid(column=1, row=0)
+                        Github_Label1.grid(column=1, row=1)
+                        Hotel_Label1.grid(column=1, row=2)
+                        
+                        Python_Label2 = ttk.Label(Acknowledgements_Frame, text='Diseñado en Python con Tkinter')
+                        Github_Label2 = ttk.Label(Acknowledgements_Frame, text='Código libre a beneficio del equipo (InnerSource)')
+                        Hotel_Label2 = ttk.Label(Acknowledgements_Frame, text='Para el equipo de De La Plaza Hotel')
+                        
+                        Python_Label2.grid(column=3, row=0, sticky='W')
+                        Github_Label2.grid(column=3, row=1, sticky='W')
+                        Hotel_Label2.grid(column=3, row=2, sticky='W')
+                        
+                        # Personal signature
+                        Signature_Label = tkinter.Label(Info_Frame, text='Creado por Lucas Da Silva @ 2026', fg='gray40', font=('Helvetica', 7, 'italic'))
+                        Signature_Label.grid(row=6, column=3, sticky='E')
+                        
+                        # Make the window modal
+                        Info_Modal_Window.transient(Root_Window)
+                        Center_Toplevel(Root_Window, Info_Modal_Window)
+                        Info_Modal_Window.grab_set()
+                        
                         # Frame Padding
                         Padding_Size = Rule_Units.To_Pixels(0.5)
                         Half_Padding = int(Padding_Size/2)
@@ -383,12 +435,16 @@ class Main_Window_Mariser:
                         # Element Padding
                         ## Title
                         Info_Frame.columnconfigure(2, minsize=Padding_Size)
+                        ## Acknowledgments
+                        Info_Frame.rowconfigure(2, minsize=Padding_Size)
+                        Acknowledgements_Frame.columnconfigure(0, minsize=Half_Padding)
+                        Acknowledgements_Frame.columnconfigure(2, minsize=Half_Padding)
                         
-                        
-                        
-                        
-                        
-                                
+                        # Element Sizing
+                        ## Acknowledgments
+                        Acknowledgements_Frame.columnconfigure(0, minsize=Half_Padding)
+                        ## Signature
+                        Info_Frame.rowconfigure(6, minsize=Half_Padding)        
                         
                 Root_Window = Tk()
                 Root_Window.resizable(width=False, height=False)
@@ -446,12 +502,12 @@ class Main_Window_Mariser:
                 
                 Buttons_Frame = ttk.Frame(Main_Frame)
                 File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente',
-                                             wraplength = 125, bg = 'firebrick2', fg = 'floral white', relief='solid',
+                                             wraplength = Rule_Units.To_Pixels(2.8), bg = 'firebrick2', fg = 'floral white', relief='solid',
                                              activebackground = 'firebrick3', activeforeground = 'white smoke',                                                                                                                                                                                              
                                              font = font.Font(weight='bold', size=9),
                                              image=Dummy_Image, compound='c')
                 Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino',
-                                                  wraplength = 130, bg = 'yellow', fg = 'black', relief='solid',
+                                                  wraplength = Rule_Units.To_Pixels(2.9), bg = 'yellow', fg = 'black', relief='solid',
                                                   activebackground = 'gold2', activeforeground = 'black',
                                                   font = font.Font(weight='bold', size=9),
                                                   image=Dummy_Image, compound='c')
