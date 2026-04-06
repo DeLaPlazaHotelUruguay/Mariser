@@ -305,8 +305,15 @@ class Main_Window_Mariser:
                         return int( Rule_Units * Pixel_Equivalency )
         
         def __init__(self):
+                import tkinter.filedialog
+                import os.path
                 Rule_Units = self.Rule_Units
                 
+                #> Program parameters
+                global Source_File_Path
+                Source_File_Path = ''
+                
+                #> Execution
                 # Set DPI awareness(makes the UI look HD lol)
                 from sys import platform
                 if platform in ('win32', 'darwin'):
@@ -445,7 +452,16 @@ class Main_Window_Mariser:
                         Acknowledgements_Frame.columnconfigure(0, minsize=Half_Padding)
                         ## Signature
                         Info_Frame.rowconfigure(6, minsize=Half_Padding)        
+                
+                def Select_Source_File():
+                        File_Path = ''
+                        Home_Dir = home = os.path.expanduser('~')
+                        global Source_File_Path
                         
+                        File_Path = tkinter.filedialog.askopenfilename(parent=Root_Window, initialdir=Home_Dir, filetypes=[('Archivo de Excel', '*.xlsx')])
+                        if File_Path: Source_File_Path = File_Path
+                        else: pass
+                
                 Root_Window = Tk()
                 Root_Window.resizable(width=False, height=False)
                 try:
@@ -501,7 +517,7 @@ class Main_Window_Mariser:
                 Dummy_Image = tkinter.PhotoImage(width=1, height=1) # https://stackoverflow.com/a/46286221
                 
                 Buttons_Frame = ttk.Frame(Main_Frame)
-                File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente',
+                File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente', command=Select_Source_File,
                                              wraplength = Rule_Units.To_Pixels(2.8), bg = 'firebrick2', fg = 'floral white', relief='solid',
                                              activebackground = 'firebrick3', activeforeground = 'white smoke',                                                                                                                                                                                              
                                              font = font.Font(weight='bold', size=9),
