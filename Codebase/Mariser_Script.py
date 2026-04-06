@@ -530,20 +530,27 @@ class Main_Window_Mariser:
                 Terminal_Scrollbar.grid(column=6, row=1, rowspan=2, sticky='NS')
                 
                 # Set the operation buttons
+                def Refresh_Button_States():
+                        if Source_File_Path: Directory_Button.config(state='normal')
+                        else: Directory_Button.config(state='disabled')
+                        if (Source_File_Path and Destination_File_Path): Generate_Button.config(state='normal')
+                        else: Generate_Button.config(state='disabled')
+                # https://www.geeksforgeeks.org/python/how-to-bind-multiple-commands-to-tkinter-button/#:~:text=provide%20horizontal%20padding-,Method%201,-%3A%20By%20using%20the
+                
                 Dummy_Image = tkinter.PhotoImage(width=1, height=1) # https://stackoverflow.com/a/46286221
                 
                 Buttons_Frame = ttk.Frame(Main_Frame)
-                File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente', command=Select_Source_File,
+                File_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Documento Fuente', state='normal', command = lambda: [Select_Source_File(), Refresh_Button_States()],
                                              wraplength = Rule_Units.To_Pixels(2.8), bg = 'firebrick2', fg = 'floral white', relief='solid',
                                              activebackground = 'firebrick3', activeforeground = 'white smoke',                                                                                                                                                                                              
                                              font = font.Font(weight='bold', size=9),
                                              image=Dummy_Image, compound='c')
-                Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino', command=Select_Output_Directory,
+                Directory_Button = tkinter.Button(Buttons_Frame, text='Seleccionar Carpeta de Destino', state='disabled', command = lambda: [Select_Output_Directory(), Refresh_Button_States()],
                                                   wraplength = Rule_Units.To_Pixels(2.9), bg = 'yellow', fg = 'black', relief='solid',
                                                   activebackground = 'gold2', activeforeground = 'black',
                                                   font = font.Font(weight='bold', size=9),
                                                   image=Dummy_Image, compound='c')
-                Generate_Button = tkinter.Button(Buttons_Frame, text='Generar!', command=Generate_Output_File,
+                Generate_Button = tkinter.Button(Buttons_Frame, text='Generar!', state='disabled', command = lambda: [Generate_Output_File(), Refresh_Button_States()],
                                                  bg = 'DarkOliveGreen3', fg = 'white', relief='solid',
                                                  activebackground = 'DarkOliveGreen4', activeforeground = 'snow',
                                                  font = font.Font(weight='bold', size=12),
