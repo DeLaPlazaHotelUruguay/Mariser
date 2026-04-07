@@ -8,6 +8,7 @@ from tkinter import font
 from PIL import Image, ImageTk
 import pdb
 import re
+import traceback
 
 Source_File_Path = ''
 Destination_File_Path = ''
@@ -337,40 +338,40 @@ class Main_Window_Mariser:
                         except: # win 8.0 or less
                             ctypes.windll.user32.SetProcessDPIAware()
 
-                def Create_Info_Window():
-                        def Center_Toplevel(parent, toplevel):
-                                def Get_TitleBar_Height():
-                                # Source: Adapted from: https://stackoverflow.com/a/61492953
-                                        TitleBar_Height = 0
-                                        
-                                        if platform not in ('win32', 'darwin'): return 0
-                                        # All of the dpi thing is done above cuz it makes the whole interface look nicer :)
-                                        offset_y = int(toplevel.geometry().rsplit('+', 1)[-1])
-
-                                        TitleBar_Height = toplevel.winfo_rooty() - offset_y
-                                        return TitleBar_Height
+                def Center_Toplevel(parent, toplevel):
+                        def Get_TitleBar_Height():
+                        # Source: Adapted from: https://stackoverflow.com/a/61492953
+                                TitleBar_Height = 0
                                 
-                                # Source: https://chatgpt.com/s/t_69d0924b0ed4819184d50c851c3a49c0
-                                parent.update_idletasks()
-                                toplevel.update_idletasks()
-                                Title_Bars_Height = ( Get_TitleBar_Height() * 2 )
+                                if platform not in ('win32', 'darwin'): return 0
+                                # All of the dpi thing is done above cuz it makes the whole interface look nicer :)
+                                offset_y = int(toplevel.geometry().rsplit('+', 1)[-1])
 
-                                # Parent geometry
-                                parent_x = parent.winfo_rootx()
-                                parent_y = parent.winfo_rooty()
-                                parent_width = parent.winfo_width()
-                                parent_height = parent.winfo_height()
-
-                                # Toplevel size
-                                width = ( toplevel.winfo_width() + Title_Bars_Height )
-                                height = ( toplevel.winfo_height() + Title_Bars_Height )
-
-                                # Compute centered position
-                                x = parent_x + ( ( parent_width - width ) // 2 )
-                                y = parent_y + ( ( parent_height - height ) // 2 )
-
-                                toplevel.geometry(f"+{x}+{y}")
+                                TitleBar_Height = toplevel.winfo_rooty() - offset_y
+                                return TitleBar_Height
                         
+                        # Source: https://chatgpt.com/s/t_69d0924b0ed4819184d50c851c3a49c0
+                        parent.update_idletasks()
+                        toplevel.update_idletasks()
+                        Title_Bars_Height = ( Get_TitleBar_Height() * 2 )
+
+                        # Parent geometry
+                        parent_x = parent.winfo_rootx()
+                        parent_y = parent.winfo_rooty()
+                        parent_width = parent.winfo_width()
+                        parent_height = parent.winfo_height()
+
+                        # Toplevel size
+                        width = ( toplevel.winfo_width() + Title_Bars_Height )
+                        height = ( toplevel.winfo_height() + Title_Bars_Height )
+
+                        # Compute centered position
+                        x = parent_x + ( ( parent_width - width ) // 2 )
+                        y = parent_y + ( ( parent_height - height ) // 2 )
+
+                        toplevel.geometry(f"+{x}+{y}")
+                                
+                def Create_Info_Window():
                         Info_Modal_Window = tkinter.Toplevel(Root_Window)
                         Info_Modal_Window.resizable(width=False, height=False)
                         Info_Modal_Window.title("Info: Mariser!")
@@ -465,7 +466,108 @@ class Main_Window_Mariser:
                         ## Acknowledgments
                         Acknowledgements_Frame.columnconfigure(0, minsize=Half_Padding)
                         ## Signature
-                        Info_Frame.rowconfigure(6, minsize=Half_Padding)        
+                        Info_Frame.rowconfigure(6, minsize=Half_Padding)
+                
+                def Create_Exception_Dialog(parent, exception): 
+                        # Made by ChatGPT, and implementing stuff from https://stackoverflow.com/a/50650817;
+                        # I am more than fed up with developing GUI from scratch for this project, but I think
+                        # ChatGPT's implementation is actually kinda good by default, and the one from the dude
+                        # in stack overflow has features I like, so I will mix the two :)
+                                                      
+                        # Crear ventana modal
+                        win = tkinter.Toplevel(parent)
+                        win.title("Ha ocurrido un error inesperado")
+                        win.transient(parent)
+                        win.grab_set()
+
+                        # Frame principal
+                        frame = ttk.Frame(win, padding=10)
+                        frame.grid(row=0, column=0, columnspan=2, sticky='NEWS')
+
+                        # --- Parte superior: icono + mensaje ---
+                        top_frame = ttk.Frame(frame)
+                        top_frame.grid(row=0, column=0, columnspan=3, sticky='WE', pady=(0, 10))
+                        ## Icono (X roja)
+                        Error_Icon_Image = ImageTk.PhotoImage(Image.open('../Assets/Images/Error Icon.png').resize((40, 40)))
+                        icon_label = ttk.Label(top_frame, image=Error_Icon_Image, font=("Segoe UI Emoji", 24))
+                        icon_label.image = Error_Icon_Image
+                        icon_label.grid(row=0, column=0, sticky='W', padx=(0, 10))
+                        ## Text
+                        Text_Frame = ttk.Frame(top_frame)
+                        Title_Label = ttk.Label(
+                            Text_Frame,
+                            text="Ha ocurrido un error inesperado",
+                            font=("Segoe UI", 10, "bold")
+                        )
+                        Description_Label = ttk.Label(
+                                Text_Frame,
+                                text=exception,
+                                font=('Segoe UI', 8, 'italic'),
+                                foreground='gray'
+                        )
+                        Text_Frame.grid(row=0, column=1)
+                        Description_Label.grid(row=1, column=0, sticky='W')
+                        Title_Label.grid(row=0, column=0, sticky='W')
+
+                        # Set the buttons
+                        ## Buttons Frame
+                        Buttons_Frame = ttk.Frame(frame)
+                        Buttons_Frame.grid(row=1, column=0, columnspan=2, sticky='NEWS')
+                        ## Toggle button
+                        def toggle():
+                            nonlocal details_visible
+                            if details_visible:
+                                details_frame.grid_forget()
+                                toggle_button.config(text="▶ Información para el programador")
+                            else:
+                                details_frame.grid(row=2, column=0, columnspan=2, sticky='NEWS', pady=(5, 10))
+                                toggle_button.config(text="▼ Información para el programador")
+                            details_visible = not details_visible
+                        
+                        toggle_button = ttk.Button(Buttons_Frame, text="▶ Información para el programador", command=toggle)
+                        toggle_button.grid(row=0, column=0, sticky="we")
+                        ## OK button
+                        ok_button = ttk.Button(Buttons_Frame, text="Aceptar", command=win.destroy)
+                        ok_button.grid(row=0, column=1, sticky='NEWS', padx=(10, 0))
+                        
+                        # Frame oculto (contenido técnico)
+                        details_frame = ttk.Frame(frame)
+                        details_visible = False
+                        frame.columnconfigure(0, weight=0)
+                        frame.columnconfigure(1, weight=0)
+                        details_frame.columnconfigure(0, weight=0)
+                        details_frame.columnconfigure(1, weight=0)
+                        ## Texto de excepción
+                        error_text = tkinter.Text(details_frame, height=10, width=59)
+                        error_text.grid(row=0, column=0, columnspan=3, sticky='NEWS')
+                        ## Scrollbar
+                        Details_Scrollbar = ttk.Scrollbar(details_frame, command=error_text.yview)
+                        Details_Scrollbar.grid(row=0, column=2, sticky='NSE')
+                        error_text.config(yscrollcommand=Details_Scrollbar.set)
+
+                        # Insertar traceback
+                        tb = "".join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+                        error_text.insert("1.0", tb)
+                        error_text.config(state="disabled")
+                        
+                        # Handle the size and position of the window
+                        ## Set its complete width
+                        Min_Width = 0
+                        Min_Height = 0
+                        
+                        Min_Height = win.winfo_height()
+                        details_visible = False; toggle()
+                        details_frame.update_idletasks()
+                        win.update_idletasks()
+                        Min_Width = win.winfo_reqwidth()
+                        win.resizable(False, False)
+                        details_visible = True; toggle()
+                        win.update_idletasks()
+
+                        win.minsize(Min_Width, Min_Height)
+                        frame.configure(width=Min_Width)
+                        ## Center the window
+                        Center_Toplevel(parent, win)
                 
                 def Select_Source_File():
                         File_Path = ''
@@ -656,6 +758,14 @@ class Main_Window_Mariser:
                 Corner_Buttons_Frame.columnconfigure(3, minsize=Rule_Units.To_Pixels(1))
                 Corner_Buttons_Frame.rowconfigure(1, minsize=Rule_Units.To_Pixels(1))
                 
+                # Throw the unexpected exceptions into a modal dialog rather than being silent about it
+                def Handle_Unexpected_Exception(Exception_Type, Exception_Object, Exception_Trace):
+                        Create_Exception_Dialog(Root_Window, Exception_Object)
+                        traceback.print_exception(Exception_Type, Exception_Object, Exception_Trace) # Print exception as well
+                        
+                Root_Window.report_callback_exception = Handle_Unexpected_Exception
+                
+                # Run the mainloop
                 Root_Window.mainloop()
                 
 Main_Window_Mariser()
