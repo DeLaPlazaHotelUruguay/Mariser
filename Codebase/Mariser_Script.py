@@ -11,7 +11,7 @@ import re
 
 Source_File_Path = ''
 Destination_File_Path = ''
-
+def Log(): pass
 
 def Generate_Output_File():
         Input_File_Path = Source_File_Path
@@ -519,9 +519,29 @@ class Main_Window_Mariser:
                 Subtitle_Label.grid(column=0, row=3, padx=(Rule_Units.To_Pixels(0.3), 0))
                 
                 # Set the terminal textbox
+                def Log(Message, Type: Literal['cue', 'error', 'alert'] = 'cue'): 
+                        if Type not in ['cue', 'error', 'alert']: raise AttributeError('Log function invoked with unrecognized mode!') # https://stackoverflow.com/a/59874453
+                        Error_Font = font.nametofont('TkFixedFont').configure(weight='bold')
+                        Alert_Font = Error_Font
+                        Normal_Font = font.nametofont('TkFixedFont')
+                        
+                        Terminal_Widget.tag_configure('Error_Tag', font=Error_Font, foreground='red')
+                        Terminal_Widget.tag_configure('Alert_Tag', font=Alert_Font, foreground='orange')
+                        Terminal_Widget.tag_configure('Normal_Tag', font=Normal_Font)
+                                                
+                        match Type:
+                                case 'cue': Terminal_Widget.insert(END, '> ', 'Normal_Tag')
+                                case 'error': Terminal_Widget.insert(END, 'Error> ', 'Error_Tag')
+                                case 'alert': Terminal_Widget.insert(END, 'Alerta> ', 'Alert_Tag')
+                        
+                        Terminal_Widget.insert(END, Message + '\n', 'Normal_Tag')
+                        # print()
+                        
+                
                 Terminal_Widget = Text(Main_Frame, width=1, height=1) # The width and heihgt value is just so it doesn't assign itself a value by default
                 Terminal_Widget.configure(font="TkFixedFont")
                 Custom_Font = font.nametofont("TkFixedFont")
+                Terminal_Widget.bind("<Key>", lambda e: "break") # https://stackoverflow.com/a/34811313
                 Terminal_Widget.grid(column=5, row=1, rowspan=2, sticky='NWES')
                 
                 ## Add the scrolbar for the terminal
