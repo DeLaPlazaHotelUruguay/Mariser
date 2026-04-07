@@ -14,6 +14,8 @@ Destination_File_Path = ''
 def Log(): pass
 
 def Generate_Output_File():
+        global Source_File_Path
+        global Destination_File_Path        
         Input_File_Path = Source_File_Path
         Output_Directory_Path = Destination_File_Path
         Input_File = None
@@ -62,13 +64,16 @@ def Generate_Output_File():
                 with open(Input_File_Path, 'r') as Input_File:
                          from openpyxl import load_workbook
                          Input_Worksheet = load_workbook(Input_File.name).active
-                         pass
 
         except IOError as Error:
-                Log("No se pudo leer el archivo fuente.", 'error')
+                Log("No se pudo encontrar o leer el archivo fuente(Ha cambiado de nombre o úbicación desde que fue seleccionado?)", 'error')
+                Log('Por favor, selecciona un nuevo archivo fuente')
+                Source_File_Path = ''
                 return
         except Exception as Error:
                 Log("Hubo un error leyendo el archivo de Excel ingresasdo.", 'error')
+                Log('Por favor, selecciona un nuevo archivo fuente')
+                Source_File_Path = ''
                 return
 
         # Extract the lotes from the file
@@ -288,7 +293,15 @@ def Generate_Output_File():
         Output_File_Path = Output_Directory_Path + '/Mayores Contables.xlsx'
         
         Output_Worksheet.title = 'Mayores contables'
-        Output_Workbook.save(Output_File_Path)
+        try: Output_Workbook.save(Output_File_Path)
+        except PermissionError:
+                Log(f'No se puede puede generar el archivo `{Output_File_Path}` porque el archivo ya existe y está abierto/siendo útilizado por algún otro programa(o hay un error de permisos)', 'error')
+                return
+        except FileNotFoundError:
+                Log(f'No se puede generar el archvio `{Output_File_Path}` porque no se encontró el directorio de destino(cambió de nombre, o se movió desde que fué seleccionado?)', 'error')
+                Log('Por favor, selecciona un nuevo directorio de destino.')
+                Destination_File_Path = ''
+                return
         Log('Se ha generado el archivo con exito!')
 
 class Main_Window_Mariser:
