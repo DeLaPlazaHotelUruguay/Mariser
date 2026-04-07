@@ -65,15 +65,11 @@ def Generate_Output_File():
                          pass
 
         except IOError as Error:
-                print("Error leyendo el archivo ", Input_File_Path, ": ", Error)
-                print("Abortando programa :(")
-                quit()
+                Log("No se pudo leer el archivo fuente.", 'error')
+                return
         except Exception as Error:
-                print("Hubo un error con el archivo de Excel ingresasdo.")
-                print("Abortando programa :(")
-                quit()
-
-        print("Archivo ", Input_File.name, "existe y es legible!")
+                Log("Hubo un error leyendo el archivo de Excel ingresasdo.", 'error')
+                return
 
         # Extract the lotes from the file
         def Get_Lotes():
@@ -100,11 +96,8 @@ def Generate_Output_File():
                         if Cierre.Operation_Is_Cierre(Operation): Lote_Number = Operation.split('.')[1]
                         elif Cobro.Operation_Is_Cobro(Operation): Lote_Number = re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1)
                         else:
-                                breakpoint()
-                                print("Operacion no reconocida! La tercera celda de la fila {0} no coincide con el formato de un Cierre ni de un Cobro.".format(Row_Number + 1),
-                                "Probablemente seria una buena idea rehacer el archivo de Mayores Contables."
-                                )
-                                quit()
+                                Log(f'Operacion no reconocida! La tercera celda de la fila {Row_Number + 1} no coincide con el formato de un Cierre ni de un Cobro.\nProbablemente seria una buena idea rehacer el archivo de Mayores Contables.', 'error')
+                                return
                                 
                         Operation_Date = Row[Dates_Column].value
                         
@@ -296,6 +289,7 @@ def Generate_Output_File():
         
         Output_Worksheet.title = 'Mayores contables'
         Output_Workbook.save(Output_File_Path)
+        Log('Se ha generado el archivo con exito!')
 
 class Main_Window_Mariser:
         class Rule_Units:
@@ -466,7 +460,7 @@ class Main_Window_Mariser:
                         global Source_File_Path
                         
                         File_Path = tkinter.filedialog.askopenfilename(parent=Root_Window, initialdir=Home_Dir, filetypes=[('Archivo de Excel', '*.xlsx')])
-                        if File_Path: Source_File_Path = File_Path
+                        if File_Path: Source_File_Path = File_Path ; Log(f'Se ha seleccionado el archivo `{Source_File_Path}` con exito')
                         else: pass
                         
                 def Select_Output_Directory():
@@ -475,7 +469,7 @@ class Main_Window_Mariser:
                         Home_Dir = home = os.path.expanduser('~')
 
                         Directory_Path = tkinter.filedialog.askdirectory(parent=Root_Window, initialdir=Home_Dir, mustexist=True)
-                        if Directory_Path: Destination_File_Path = Directory_Path
+                        if Directory_Path: Destination_File_Path = Directory_Path; Log(f'Se ha seleccionado el directorio `{Destination_File_Path}` como destino')
                         else: pass
                 
                 Root_Window = Tk()
@@ -519,6 +513,7 @@ class Main_Window_Mariser:
                 Subtitle_Label.grid(column=0, row=3, padx=(Rule_Units.To_Pixels(0.3), 0))
                 
                 # Set the terminal textbox
+                global Log
                 def Log(Message, Type: Literal['cue', 'error', 'alert'] = 'cue'): 
                         if Type not in ['cue', 'error', 'alert']: raise AttributeError('Log function invoked with unrecognized mode!') # https://stackoverflow.com/a/59874453
                         Error_Font = font.nametofont('TkFixedFont').configure(weight='bold')
@@ -536,7 +531,6 @@ class Main_Window_Mariser:
                         
                         Terminal_Widget.insert(END, Message + '\n', 'Normal_Tag')
                         # print()
-                        
                 
                 Terminal_Widget = Text(Main_Frame, width=1, height=1) # The width and heihgt value is just so it doesn't assign itself a value by default
                 Terminal_Widget.configure(font="TkFixedFont")
