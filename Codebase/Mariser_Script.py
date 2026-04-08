@@ -13,6 +13,7 @@ import traceback
 Source_File_Path = ''
 Destination_File_Path = ''
 def Log(): pass
+class Mariser_Exception(Exception): pass
 
 def Generate_Output_File():
         global Source_File_Path
@@ -103,7 +104,10 @@ def Generate_Output_File():
                         elif Cobro.Operation_Is_Cobro(Operation): Lote_Number = re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1)
                         else:
                                 Log(f'Operacion no reconocida! La tercera celda de la fila {Row_Number + 1} no coincide con el formato de un Cierre ni de un Cobro.\nProbablemente seria una buena idea rehacer el archivo de Mayores Contables.', 'error')
-                                return
+                                Log('Por favor, selecciona un nuevo documento fuente')
+                                global Source_File_Path
+                                Source_File_Path = ''
+                                raise Mariser_Exception('Fila invalida en documento fuente')
                                 
                         Operation_Date = Row[Dates_Column].value
                         
@@ -135,7 +139,8 @@ def Generate_Output_File():
                                 Current_Lote.Cobros.append(Operation_Object)
                                 Current_Lote.Operations.append(Operation_Object)
                 return Lotes                
-        Lotes = Get_Lotes()
+        try: Lotes = Get_Lotes()
+        except Mariser_Exception: return
 
         # Build the output file
         Output_Workbook = Workbook()
@@ -288,7 +293,8 @@ def Generate_Output_File():
                                 case 'P': State_Cell.font = Font(name='Wingdings 2', size='12', color='00008000', bold=True) # '🗸'
                                 case 'O': State_Cell.font = Font(name='Wingdings 2', size='12', color='00FF0000', bold=True) # '🗴'
                                 case '⚠': State_Cell.font = Font(name='Calibri', size='12', color='00FF9900', bold=True)
-        Get_Output_File()
+        try: Get_Output_File()
+        except Mariser_Exception: return
         
         # Save the file
         Output_File_Path = Output_Directory_Path + '/Mayores Contables.xlsx'
@@ -645,7 +651,6 @@ class Main_Window_Mariser:
                                 case 'alert': Terminal_Widget.insert(END, 'Alerta> ', 'Alert_Tag')
                         
                         Terminal_Widget.insert(END, Message + '\n', 'Normal_Tag')
-                        # print()
                 
                 Terminal_Widget = Text(Main_Frame, width=1, height=1) # The width and heihgt value is just so it doesn't assign itself a value by default
                 Terminal_Widget.configure(font="TkFixedFont")
