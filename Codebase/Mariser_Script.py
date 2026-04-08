@@ -78,6 +78,62 @@ def Generate_Output_File():
                 Source_File_Path = ''
                 return
 
+        # Check the format of the file
+        def Check_File_Format():
+                # Checks the structure of the column's headers,
+                # and assumes the contents are right until proven otherwise.
+                Quantity_Header_Cells = len(Input_Worksheet[1])
+
+                if Quantity_Header_Cells < 5:
+                        Log('Formato incorrecto del archivo fuente! Se encontraron menos de 5 cabezales de columna, y el programa requiere las primeras 5 columnas generadas por el programa de hoteleria.', 'error')
+                        Log('Por favor, seleccione otro documento fuente')
+                        Source_File_Path = ''
+                        raise Mariser_Exception('Formato incorrecto Archivo fuente: Cantidad de columnas inferior a las requeridas')
+                        
+                for Header_Number in range(0, 6):
+                        try: Header = str(Input_Worksheet[1][Header_Number].value)
+                        except IndexError: Header = None
+                        match Header_Number:
+                                case 0: 
+                                        if Header != 'Fecha':
+                                                Log(f'Formato incorrecto del archivo fuente! La primera columna se titula `{Header}` en vez de `Fecha`!', 'error')
+                                                raise Mariser_Exception('Formato Incorrecto Archivo fuente: Primera columna')
+                                case 1:
+                                        if Header != 'Nro Asto':
+                                                Log(f'Formato incorrecto del archivo fuente! La segunda columna se titula `{Header}` en vez de `Nro Asto`', 'error')
+                                                raise Mariser_Exception('Formato Incorrecto Archivo fuente: Segunda columna')
+                                case 2:
+                                        if Header != 'Detalle':
+                                                Log(f'Formato incorrecto del archivo fuente! La tercera columna se titula `{Header}` en vez de `Detalle`', 'error')
+                                                raise Mariser_Exception('Formato Incorrecto Archivo fuente: Tercera columna')
+                                case 3: 
+                                        if Header != 'DEBE':
+                                                Log(f'Formato incorrecto del archivo fuente! La cuarta columna se titula `{Header}` en vez de `DEBE`', 'error')
+                                                raise Mariser_Exception('Formato Incorrecto Archivo fuente: Cuarta columna')
+                                case 4: 
+                                        if Header != 'HABER':
+                                                Log(f'Formato incorrecto del archivo fuente! La quinta columna se titula `{Header}` en vez de `HABER`', 'error')
+                                                raise Mariser_Exception('Formato Incorrecto Archivo fuente: Quinta columna')
+                                case 5:
+                                        if Header is None:
+                                                Log(f'Formato inesperado del archivo fuente; No se encontró cabezal para la 6ta columna.\n' +
+                                                      'El programa es indiferente a esta  y su contenido, pero es un indicativo de que el archivo fue alterado',
+                                                      'alert'
+                                                )
+                                        elif Header != 'SALDO':
+                                                Log(f'Formato inesperado del archivo fuente; La sexta columna se titula `{Header}` en vez de `SALDO`.\n' +
+                                                      'El programa es indiferente a esta  y su contenido, pero es un indicativo de que el archivo fue alterado',
+                                                      'alert'
+                                                )
+                if Quantity_Header_Cells > 6:
+                        Log('El archivo fuente contiene más cabezales de columna de los que son generados por el programa de hoteleria.\n' +
+                            'El programa es indiferente a esas columnas y sus contenidos, pero es un indicativo de que el archivo fue alterado',
+                            'alert'
+                        )
+   
+        try: Check_File_Format()
+        except Mariser_Exception: return
+  
         # Extract the lotes from the file
         def Get_Lotes():
                 def Lote_Exists(Number):
