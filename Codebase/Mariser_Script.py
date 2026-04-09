@@ -49,7 +49,8 @@ def Generate_Output_File():
                         self.Asto = Num_Asto
                         self.Amount = Amount
                         
-                def Operation_Is_Cierre(Operation): return re.match(r"^Cierre de Lote Nro\.[0-9]+$", Operation)
+                def Operation_Is_Cierre(Operation): return re.match(r"^\s*Cierre\s+de\s+Lote\s+N[ro]{2}\s*\.\s*[0-9]+\s*$", Operation)
+                def Get_Lote_Number(Operation): return int(Operation.split('.')[1])
                 def To_String(self): print("Cierre, Numero_Lote" + self.Lote_Number, self.Asto, self.Date, self.Amount )
         class Cobro:
                 def __init__(self, Lote_Number, Date, Compr, Num_Asto, Amount):
@@ -59,7 +60,9 @@ def Generate_Output_File():
                         self.Asto = Num_Asto
                         self.Amount = Amount
                         
-                def Operation_Is_Cobro(Operation): return re.match(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.[0-9]+$", Operation)
+                def Operation_Is_Cobro(Operation): return re.match(r'^\s*Cob\.?\s+Lote\s+N[ro]{2}\.?\s+[0-9]+\s+s\/Compr\.?\s*[0-9]+\s*$', Operation)
+                def Get_Lote_Number(Operation): return int(re.search(r'^\s*Cob\.?\s+Lote\s+N[ro]{2}\.?\s+([0-9]+)\s+s\/Compr\.?\s*[0-9]+\s*$', Operation).group(1))
+                def Get_Compr_Operation(Operation): return int(re.search(r'^\s*Cob\.?\s+Lote\s+N[ro]{2}\.?\s+[0-9]+\s+s\/Compr\.?\s*([0-9]+)\s*$', Operation).group(1))
                 def To_String(self): print("Cobro, Numero_Lote" + self.Lote_Number, self.Date, self.Compr, self.Asto, self.Amount)
                 
         # Open the spreadsheet file
@@ -194,8 +197,8 @@ def Generate_Output_File():
                         Lote_Number = None
                         Operation_Date = None
                         
-                        if Cierre.Operation_Is_Cierre(Operation): Lote_Number = Operation.split('.')[1]
-                        elif Cobro.Operation_Is_Cobro(Operation): Lote_Number = re.search(r'^Cob\. Lote Nro\. ([0-9]+) s\/Compr\.[0-9]+$', Operation).group(1)
+                        if Cierre.Operation_Is_Cierre(Operation): Lote_Number = Cierre.Get_Lote_Number(Operation)
+                        elif Cobro.Operation_Is_Cobro(Operation): Lote_Number = Cobro.Get_Lote_Number(Operation)
                         else:
                                 Log(f'Operacion no reconocida! La tercera celda de la fila {Row_Number + 1} no coincide con el formato de un Cierre ni de un Cobro.\nProbablemente seria una buena idea rehacer el archivo de Mayores Contables.', 'error')
                                 Log('Por favor, selecciona un nuevo documento fuente')
@@ -208,9 +211,7 @@ def Generate_Output_File():
                         if not Lote_Exists(Lote_Number): Lotes[Lote_Number] = Lote(Lote_Number, Operation_Date)
                         elif Date_Is_Earlier_Than_Lote( Lotes[Lote_Number], Operation_Date ): Lotes[Lote_Number].Initial_Date = Operation_Date
                         
-                        # Construct the operation
-                        def Get_Compr_Operation(Operation): return re.search(r"^Cob\. Lote Nro\. [0-9]+ s\/Compr\.([0-9]+)$", Operation).group(1)
-                        
+                        # Construct the operation                        
                         Current_Lote = Lotes[Lote_Number]
                         Asto_Column = 1
                         Value_Column = None
@@ -226,7 +227,7 @@ def Generate_Output_File():
                                 Current_Lote.Operations.append(Operation_Object)
                         elif Cobro.Operation_Is_Cobro(Operation):
                                 Value_Column = 4
-                                Compr = Get_Compr_Operation(Operation)
+                                Compr = Cobro.Get_Compr_Operation(Operation)
                                 Amount = Row[Value_Column].value
                                 
                                 Operation_Object = Cobro(Lote_Number, Operation_Date, Compr, Num_Asto, Amount)
