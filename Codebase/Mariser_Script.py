@@ -1,3 +1,4 @@
+import sys
 import openpyxl
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, NamedStyle
@@ -425,6 +426,13 @@ class Main_Window_Mariser:
                 import os.path
                 Rule_Units = self.Rule_Units
                 
+                def Get_Asset_Path(Asset_Relative_Path): # Source: https://coderslegacy.com/add-image-data-files-in-pyinstaller-exe/#google_vignette:~:text=Understanding%20%E2%80%93onefile%20Mode
+                        
+                        Project_Script_Basedir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # source: https://stackoverflow.com/a/30218825
+                        Assets_Dir_Path = getattr(sys, '_MEIPASS', Project_Script_Basedir) + r'\Assets'
+                        Asset_Path = os.path.join(Assets_Dir_Path + Asset_Relative_Path)
+                        return Asset_Path
+                
                 #> Program parameters
                 global Source_File_Path
                 global Destination_File_Path
@@ -482,7 +490,7 @@ class Main_Window_Mariser:
                         
                         # Add the Scale Image Banner
                         Logo_Size2 = ( Rule_Units.To_Pixels(2), Rule_Units.To_Pixels(2)) # (Width, height)
-                        Scale_Image = Image.open(r'../Assets/Images/Window Icon.png').resize(Logo_Size2)
+                        Scale_Image = Image.open(Get_Asset_Path(r'\Images\Window Icon.png')).resize(Logo_Size2)
                         Scale_Image = ImageTk.PhotoImage(Scale_Image)
                         
                         Scale_Banner = ttk.Label(Info_Frame, image=Scale_Image) # I have no idea why is it that tkinter is such a bitch with this image thing,
@@ -514,9 +522,9 @@ class Main_Window_Mariser:
                         
                         Icons_Size = (Rule_Units.To_Pixels(0.75),  Rule_Units.To_Pixels(0.75))
                        
-                        Python_Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Python Logo.png').resize(Icons_Size))
-                        Github_Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Github Logo.png').resize(Icons_Size))
-                        Hotel_Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Hotel Logo.png').resize(Icons_Size))
+                        Python_Icon_Image = ImageTk.PhotoImage(Image.open(Get_Asset_Path(r'\Images\Python Logo.png')).resize(Icons_Size))
+                        Github_Icon_Image = ImageTk.PhotoImage(Image.open(Get_Asset_Path(r'\Images\Github Logo.png')).resize(Icons_Size))
+                        Hotel_Icon_Image = ImageTk.PhotoImage(Image.open(Get_Asset_Path(r'\Images\Hotel Logo.png')).resize(Icons_Size))
                         Python_Label1 = ttk.Label(Acknowledgements_Frame, image=Python_Icon_Image)
                         Github_Label1 = ttk.Label(Acknowledgements_Frame, image=Github_Icon_Image)
                         Hotel_Label1 = ttk.Label(Acknowledgements_Frame, image=Hotel_Icon_Image)
@@ -589,7 +597,7 @@ class Main_Window_Mariser:
                         top_frame = ttk.Frame(frame)
                         top_frame.grid(row=0, column=0, columnspan=3, sticky='WE', pady=(0, 10))
                         ## Icono (X roja)
-                        Error_Icon_Image = ImageTk.PhotoImage(Image.open('../Assets/Images/Error Icon.png').resize((40, 40)))
+                        Error_Icon_Image = ImageTk.PhotoImage(Image.open(Get_Asset_Path(r'\Images\Error Icon.png')).resize((40, 40)))
                         icon_label = ttk.Label(top_frame, image=Error_Icon_Image, font=("Segoe UI Emoji", 24))
                         icon_label.image = Error_Icon_Image
                         icon_label.grid(row=0, column=0, sticky='W', padx=(0, 10))
@@ -691,7 +699,7 @@ class Main_Window_Mariser:
                 Root_Window = Tk()
                 Root_Window.resizable(width=False, height=False)
                 try:
-                        Icon_Image = ImageTk.PhotoImage(Image.open(r'../Assets/Images/Window Icon.png'))
+                        Icon_Image = ImageTk.PhotoImage(Image.open(Get_Asset_Path(r'\Images\Window Icon.png')))
                         Root_Window.wm_iconphoto(True, Icon_Image)
                 except FileNotFoundError: pass
                 Root_Window.title("Mariser!")
@@ -702,7 +710,7 @@ class Main_Window_Mariser:
                 
                 # Set the Logo
                 Logo_Size = ( Rule_Units.To_Pixels(2), Rule_Units.To_Pixels(2)) # (Width, height)
-                Logo_Image = Image.open(r'../Assets/Images/Hotel Logo.png').resize(Logo_Size)
+                Logo_Image = Image.open(Get_Asset_Path(r'\Images\Hotel Logo.png')).resize(Logo_Size)
                 Logo_Image = ImageTk.PhotoImage(Logo_Image)
                 Logo_Label = ttk.Label(Main_Frame)
                 Logo_Label['image'] = Logo_Image
@@ -714,7 +722,7 @@ class Main_Window_Mariser:
                 
                 ## Append the Header Banner
                 Title_Banner_Size = (Rule_Units.To_Pixels(4), Rule_Units.To_Pixels(0.8))
-                Title_Banner_Image = Image.open(r'../Assets/Images/Header, Berlin Sans Demi Bold Banner.png').resize(Title_Banner_Size)
+                Title_Banner_Image = Image.open(Get_Asset_Path(r'\Images\Header, Berlin Sans Demi Bold Banner.png')).resize(Title_Banner_Size)
                 Title_Banner_Image = ImageTk.PhotoImage(Title_Banner_Image)
                 Title_Banner_Label = ttk.Label(Text_Frame, image=Title_Banner_Image)
                 Title_Banner_Label.grid(column=0, row=0, sticky='N')
@@ -795,8 +803,8 @@ class Main_Window_Mariser:
                 Corner_Buttons_Frame.grid(column=1, row=11, columnspan=2, sticky='NWES')
                 
                 Icons_Size = ( Rule_Units.To_Pixels(1), Rule_Units.To_Pixels(1)) # (Width, height)
-                Exit_Image = Image.open(r'../Assets/Images/Exit Icon.png').resize(Icons_Size)
-                Info_Image = Image.open(r'../Assets/Images/Info Icon.png').resize(Icons_Size)
+                Exit_Image = Image.open(Get_Asset_Path(r'\Images\Exit Icon.png')).resize(Icons_Size)
+                Info_Image = Image.open(Get_Asset_Path(r'\Images\Info Icon.png')).resize(Icons_Size)
                 Info_Image = ImageTk.PhotoImage(Info_Image)
                 Exit_Image = ImageTk.PhotoImage(Exit_Image)
                 
