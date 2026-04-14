@@ -32,3 +32,6 @@ Para solucionar esto, podemos hacer...<br>
    <strong>Nota:</strong> Dependiendo de la versión del sistema, puede ser que esta opción aparezca al hacer click a un botón que diga "Más opciones".
    <br><br>
 </ol>
+Esto hace que puedas abrir el programa rápidamente cuando lo neceistes simplemente haciendo click en el icono en la barra de tareas.
+<img width="1920" height="1080" alt="Click Mariser Barra Tareas" src="https://github.com/user-attachments/assets/a7a3bb61-d275-4c46-93c8-eb8e5bab102d" />
+<br><br>
