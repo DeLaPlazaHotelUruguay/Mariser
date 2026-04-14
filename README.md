@@ -35,3 +35,24 @@ Para solucionar esto, podemos hacer...<br>
 Esto hace que puedas abrir el programa rápidamente cuando lo neceistes simplemente haciendo click en el icono en la barra de tareas.
 <img width="1920" height="1080" alt="Click Mariser Barra Tareas" src="https://github.com/user-attachments/assets/a7a3bb61-d275-4c46-93c8-eb8e5bab102d" />
 <br><br>
+<h3>Instalar desde código fuente <b>(avanzado)</b></h3>
+Esta opción está pensada exclusivamente para desarrolladores, por tal motivo, esta sección tiene un tono más técnico, y asume que tienes una idea de lo que estás haciendo...
+<ol>
+   <li><b>Clona el repositorio a tu máquina</b></li>
+   <li><b>En caso de que no lo tengas ya, instala python</b></li>
+       En sistemas windows modernos(win 10 y superior) puedes útilizar winget para instalar python.<br>
+       En tu interprete de comandos favorito, ejecuta: <code>winget install python</code><br>
+       Si tienes el gestor de paquetes chocolately, también puedes instalarlo por esa vía: <code>choco install python</code><br>
+       Si no dispones de uno ni de otro, o por algún otro motivo puedes conseguir python a traves de binarios precompilados: <a href=https://www.python.org/downloads/>Página de descargas de python.org</a>
+   <li><b>Instala pyinstaller</b></li>
+       Con python ya instalado, deberías ser capaz de utilizar pip, e instalar pyinstaller.<br>
+       Ejecuta: <code>pip install pyinstaller</code><br>
+       <b>Nota: </b>en caso de que el sistema no reconozca pip como un comando, probablemente sea el caso de que no vino instalado con tu versión de python, o que hay un problema en el entorno de tu OS. En cualquier caso, buena suerte con eso :)
+    <li><b>Construye el ejecutable</b></li>
+        Primero, dirigete al directorio raíz del repositorio en tu máquina. Luego, deberás ejecutar el batch script úbicado en /Releasing. El cuál tiene el comando exacto para reconstruir el archivo ejecutable a partir del script de python.<br>
+        Para eso, de nuevo, una vez en el directorio raíz del repositorio, ejecuta: <code>"Releasing\Pyinstaller command.bat"</code><br>
+        Esto generará el archivo ejecutable en tu directorio actual. Claramente podrías ejecutar el script desde cualquier lugar que te plazca, y/o moverlo a voluntad, pero esta manera es la más fácil de enseñar.<br>
+       
+</ol>
+   
+
