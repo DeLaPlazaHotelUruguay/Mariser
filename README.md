@@ -25,6 +25,7 @@ Para solucionar esto, podemos hacer...<br>
    <br><br>
    <li><b>Pon el ratón sobre la descarga, y haz click sobre el icono de la carpeta</b></li>
    <img width="1920" height="1080" alt="Hover The Mouse and Click over file icon 3" src="https://github.com/user-attachments/assets/00432438-e260-4c98-8284-78be49aab8db" />
+   El icono de la carpeta solo aparecerá una vez que el ratón se encuentre encima de la descarga.<br>
    <br><br>
 
    <li><b>Haz click derecho sobre el archivo resaltado en azul, busca "Anclar a la barra de tareas" y dale click</b></li>
@@ -54,8 +55,7 @@ Esta opción está pensada exclusivamente para desarrolladores, por tal motivo, 
         Esto generará el archivo ejecutable en tu directorio actual. Claramente podrías ejecutar el script desde cualquier lugar que te plazca, y/o moverlo a voluntad, pero esta manera es la más fácil de enseñar.<br>
 </ol>
 <h2>ℹ️ Acerca del programa</h2>
-Mariser! es un programa que automatiza el checkeo de lotes contables. Es un programa creado por Lucas Da Silva en 2026 como regalo para el equipo De La Plaza Hotel.<br>
-A partir del archivo de Mayores Contables generado automaticamente por el sistema de hoteleria, genera un resumen con el estado de cada lote en el archivo.<br>
+Mariser! es un programa que automatiza el checkeo de lotes contables. Es un programa creado por Lucas Da Silva en 2026 como regalo para el equipo De La Plaza Hotel. A partir del archivo de Mayores Contables generado automaticamente por el sistema de hoteleria, genera un resumen con el estado de cada lote en el archivo.<br>
 <br>
 Es un programa sencillo, pensado para ser una herramienta extremadamente fácil de usar sin ningún tipo de conocimiento técnico.<br>
 Pensada para fácilitar al máximo un trabajo que es largo, arduo, tedioso, extremadamente importante y propenso al error humano.<br>
