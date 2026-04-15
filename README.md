@@ -1,4 +1,4 @@
-<h1>Mariser!</h1>
+<h1><img width="25" height="25" alt="Window Icon" src="https://github.com/user-attachments/assets/c760c12a-5ca5-4a7a-8f94-59a1e28457dc" /> Mariser!</h1>
 <h2>"Instalación":</h2>
 Instalar el programa para útilizarlo es muy sencillo siguiendo estos pasos:<br>
 <ol>
