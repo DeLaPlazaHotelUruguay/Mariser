@@ -1,5 +1,5 @@
 <h1><img width="25" height="25" alt="Window Icon" src="https://github.com/user-attachments/assets/c760c12a-5ca5-4a7a-8f94-59a1e28457dc" /> Mariser!</h1>
-<h2>"Instalación":</h2>
+<h2>💾 "Instalación"</h2>
 Instalar el programa para útilizarlo es muy sencillo siguiendo estos pasos:<br>
 <ol>
     <li><b>Haz click sobre "Mariser! Última Versión.exe"</b></li>
@@ -53,7 +53,7 @@ Esta opción está pensada exclusivamente para desarrolladores, por tal motivo, 
         Para eso, de nuevo, una vez en el directorio raíz del repositorio, ejecuta: <code>"Releasing\Pyinstaller command.bat"</code><br>
         Esto generará el archivo ejecutable en tu directorio actual. Claramente podrías ejecutar el script desde cualquier lugar que te plazca, y/o moverlo a voluntad, pero esta manera es la más fácil de enseñar.<br>
 </ol>
-<h2>Acerca del programa</h2>
+<h2>ℹ️ Acerca del programa</h2>
 Mariser! es un programa que automatiza el checkeo de lotes contables. Es un programa creado por Lucas Da Silva en 2026 como regalo para el equipo De La Plaza Hotel.<br>
 A partir del archivo de Mayores Contables generado automaticamente por el sistema de hoteleria, genera un resumen con el estado de cada lote en el archivo.<br>
 <br>
