@@ -1,4 +1,4 @@
-<h1>Marser!</h1>
+<h1>Mariser!</h1>
 <h2>"Instalación":</h2>
 Instalar el programa para útilizarlo es muy sencillo siguiendo estos pasos:<br>
 <ol>
@@ -52,7 +52,11 @@ Esta opción está pensada exclusivamente para desarrolladores, por tal motivo, 
         Primero, dirigete al directorio raíz del repositorio en tu máquina. Luego, deberás ejecutar el batch script úbicado en /Releasing. El cuál tiene el comando exacto para reconstruir el archivo ejecutable a partir del script de python.<br>
         Para eso, de nuevo, una vez en el directorio raíz del repositorio, ejecuta: <code>"Releasing\Pyinstaller command.bat"</code><br>
         Esto generará el archivo ejecutable en tu directorio actual. Claramente podrías ejecutar el script desde cualquier lugar que te plazca, y/o moverlo a voluntad, pero esta manera es la más fácil de enseñar.<br>
-       
 </ol>
-   
-
+<h2>Acerca del programa</h2>
+Mariser! es un programa que automatiza el checkeo de lotes contables. Es un programa creado por Lucas Da Silva en 2026 como regalo para el equipo De La Plaza Hotel.<br>
+A partir del archivo de Mayores Contables generado automaticamente por el sistema de hoteleria, genera un resumen con el estado de cada lote en el archivo.<br>
+<br>
+Es un programa sencillo, pensado para ser una herramienta extremadamente fácil de usar sin ningún tipo de conocimiento técnico.<br>
+Pensada para fácilitar al máximo un trabajo que es largo, arduo, tedioso, extremadamente importante y propenso al error humano.<br>
+<br>
